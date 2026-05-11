@@ -2,8 +2,20 @@
 ### Handoff to Dylan Poler · May 2026
 
 **Live site:** https://hospitalityiq-dashboard.netlify.app/  
-**GitHub repo:** https://github.com/npolerorg/General  
+**This repo (compiled output):** https://github.com/npolerorg/General  
+**Next.js source repo (private):** https://github.com/npolerorg/hospiq-source  
 **Netlify project:** `hospitalityiq-dashboard` (under Noel Poler's account)
+
+---
+
+## Two Repos — What Each One Is
+
+| Repo | Contents | When to use |
+|------|----------|-------------|
+| `npolerorg/General` (this repo) | Compiled static output — the HTML/JS that Netlify actually serves | Reference only. Don't edit directly. |
+| `npolerorg/hospiq-source` (**private**) | Full Next.js source — TSX components, API routes, Tailwind, Supabase, Netlify Functions | This is where all development happens |
+
+**Dylan: clone `hospiq-source` to make any UI or logic changes.** After building, the output gets deployed via Netlify automatically.
 
 ---
 
@@ -61,7 +73,88 @@ An operations and analytics dashboard for the Dream Inn Hotel (2710 N Ocean Driv
 
 ---
 
-## Running Locally
+## For Dylan — Source Repo Setup
+
+### Clone and run the source
+
+```bash
+git clone https://github.com/npolerorg/hospiq-source.git
+cd hospiq-source
+npm install
+```
+
+Create a `.env.local` file in the root with these variables (get values from Noel):
+
+```
+NODE_ENV=development
+DEMO_MODE=
+GUESTY_CLIENT_ID=
+GUESTY_CLIENT_SECRET=
+ALGC_FUNC_SECRET=
+CLAUDE_TO=
+CLAUDE_SECRET=
+ANTHROPIC_API_KEY=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
+Then start the dev server:
+
+```bash
+npm run dev        # runs at http://localhost:3000
+```
+
+Or with Netlify functions active:
+
+```bash
+netlify dev        # runs at http://localhost:8888
+```
+
+### Build and deploy
+
+Netlify auto-deploys on every push to `main` of `hospiq-source` — once you connect the repo in the Netlify dashboard (Noel needs to do this once: Site settings → Build & deploy → Link repository → `npolerorg/hospiq-source`).
+
+Manual deploy:
+```bash
+npm run build
+netlify deploy --prod
+```
+
+Build command: `npm run build` → publishes `.next/` → `@netlify/plugin-nextjs` handles the rest.
+
+### Login password
+
+The login page at `/login` is protected by a password. It's stored in `.env.local` — check the `CLAUDE_SECRET` or `DEMO_MODE` variable. Ask Noel for the value.
+
+### Source layout
+
+```
+src/
+├── app/
+│   ├── (auth)/login/          ← Login page
+│   ├── (dashboard)/
+│   │   ├── ai-brief/
+│   │   ├── competitors/
+│   │   ├── dashboard/
+│   │   ├── dream-inn/
+│   │   ├── noi/
+│   │   ├── properties/
+│   │   ├── reservations/
+│   │   └── royal-hotel/
+│   └── api/                   ← API routes
+├── components/
+├── hooks/
+├── lib/
+└── types/
+netlify/functions/             ← Serverless functions (chat, slider-state, scheduled-sync)
+scripts/                       ← Data import/export utilities
+supabase/migrations/           ← Database schema
+```
+
+---
+
+## Running Locally (compiled output repo)
 
 ### Option 1 — Netlify CLI (recommended, includes functions + AI chat)
 

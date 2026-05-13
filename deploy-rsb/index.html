@@ -453,6 +453,22 @@ h1.slide-title {
   font-family: 'JetBrains Mono', monospace;
 }
 
+.hours-total .total-value[contenteditable] {
+  cursor: text;
+  border-bottom: 1px dashed rgba(201,168,106,0.5);
+  padding-bottom: 1px;
+  outline: none;
+  min-width: 220px;
+  text-align: right;
+}
+
+.hours-total .total-value[contenteditable]:focus {
+  border-bottom-color: var(--gold);
+  background: rgba(201,168,106,0.08);
+  border-radius: 2px;
+  padding: 0 4px 1px;
+}
+
 /* ====================================================
    SLIDE 4 — BEFORE/AFTER
 ==================================================== */
@@ -2231,7 +2247,7 @@ h1.slide-title {
       <!-- MR9 today: 15 units / 32.6% [RED FLAG] -->
       <div style="display: grid; grid-template-columns: 180px 1fr 210px; gap: 14px; align-items: center; padding: 5px 10px 5px 8px; background: rgba(184,58,58,0.05); border-left: 4px solid var(--red-flag);">
         <div>
-          <div style="font-size: 12px; font-weight: 700; color: var(--red-flag);">MR9 Today</div>
+          <div style="font-size: 12px; font-weight: 700; color: var(--red-flag);">MR9 Before</div>
           <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--red-flag); font-weight: 600;">15 units · 32.6%</div>
         </div>
         <div style="position: relative; height: 26px; background: var(--light-bg); border-radius: 2px; border: 1px solid rgba(184,58,58,0.3);">
@@ -2244,7 +2260,7 @@ h1.slide-title {
       <!-- Board control: 24 units / 52.2% -->
       <div style="display: grid; grid-template-columns: 180px 1fr 210px; gap: 14px; align-items: center; padding: 5px 0;">
         <div>
-          <div style="font-size: 12px; font-weight: 600; color: var(--navy);">Board control</div>
+          <div style="font-size: 12px; font-weight: 600; color: var(--navy);">Board control — MR9 Today</div>
           <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--text-muted);">24 units · 52.2%</div>
         </div>
         <div style="position: relative; height: 26px; background: var(--light-bg); border-radius: 2px; border: 1px solid var(--border);">
@@ -2397,7 +2413,7 @@ h1.slide-title {
     </div>
     <div class="hours-total">
       <span class="total-label">ESTIMATED TOTAL EFFORT — FIRST 60 DAYS</span>
-      <span class="total-value" id="hours-total">[EDITABLE] HOURS · A thorough process</span>
+      <span class="total-value" id="hours-total" contenteditable="true" spellcheck="false">[EDITABLE] HOURS · A thorough process</span>
     </div>
   </div>
 </div>
@@ -3850,24 +3866,28 @@ function parseHourRange(str) {
 }
 
 function recalcTotal() {
-  let totalLo = 0, totalHi = 0;
-  document.querySelectorAll('.ws-hours input').forEach(input => {
-    const [lo, hi] = parseHourRange(input.value);
-    totalLo += lo;
-    totalHi += hi;
-  });
-  const totalEl = document.getElementById('hours-total');
-  if (totalEl) {
-    totalEl.textContent = `[EDITABLE] HOURS · A thorough process`;
-  }
+  // no-op: total bar is user-editable — do not overwrite
 }
 
 document.querySelectorAll('.ws-hours input').forEach(input => {
-  input.addEventListener('input', recalcTotal);
   input.addEventListener('focus', function() { this.select(); });
 });
 
-recalcTotal();
+// Select-all on click for the editable total bar
+(function() {
+  const totalEl = document.getElementById('hours-total');
+  if (!totalEl) return;
+  totalEl.addEventListener('focus', function() {
+    const sel = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(this);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  });
+  totalEl.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); this.blur(); }
+  });
+})();
 
 // Comp row → map modal
 const mapModal = document.getElementById('map-modal');

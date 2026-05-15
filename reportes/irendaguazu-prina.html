@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Análisis de Oportunidad — IRENDAGUAZU / PRINA SRL</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0b1220;
+    --panel: #121a2b;
+    --panel-2: #18223a;
+    --border: #1f2b48;
+    --text: #e6ecf5;
+    --muted: #93a1bf;
+    --accent: #4ade80;
+    --accent-2: #60a5fa;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --gold: #fbbf24;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.55;
+  }
+  header.hero {
+    padding: 56px 32px 32px;
+    background: linear-gradient(180deg, #0f1a33 0%, #0b1220 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  header.hero .wrap { max-width: 1200px; margin: 0 auto; }
+  header.hero .tag {
+    display: inline-block; padding: 4px 10px; border-radius: 999px;
+    background: rgba(74, 222, 128, 0.12); color: var(--accent);
+    border: 1px solid rgba(74, 222, 128, 0.3); font-size: 12px; letter-spacing: 0.5px;
+    text-transform: uppercase; font-weight: 600; margin-bottom: 12px;
+  }
+  header.hero h1 { font-size: 38px; margin: 4px 0 8px; letter-spacing: -0.5px; }
+  header.hero p.sub { color: var(--muted); font-size: 16px; max-width: 820px; margin: 0; }
+  header.hero .meta { margin-top: 18px; display: flex; gap: 28px; flex-wrap: wrap; color: var(--muted); font-size: 13px; }
+  header.hero .meta b { color: var(--text); }
+
+  nav.toc {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11,18,32,0.92); backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav.toc .wrap { max-width: 1200px; margin: 0 auto; padding: 12px 32px;
+    display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; }
+  nav.toc a { color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 6px; }
+  nav.toc a:hover { background: var(--panel); color: var(--text); }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 32px; }
+  section { margin-bottom: 56px; scroll-margin-top: 60px; }
+  section > h2 {
+    font-size: 26px; margin: 0 0 6px; letter-spacing: -0.3px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  section > h2 .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--panel-2); border: 1px solid var(--border);
+    font-size: 14px; color: var(--accent-2); font-weight: 700;
+  }
+  section > p.lead { color: var(--muted); margin: 0 0 22px; max-width: 880px; }
+  h3 { font-size: 18px; margin: 24px 0 10px; color: var(--text); }
+  h4 { font-size: 15px; margin: 18px 0 6px; color: var(--accent-2); }
+
+  .grid { display: grid; gap: 16px; }
+  .grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 900px) {
+    .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
+    header.hero h1 { font-size: 28px; }
+  }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px;
+  }
+  .card.muted { background: var(--panel-2); }
+  .kpi .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi .val { font-size: 26px; font-weight: 700; margin-top: 4px; }
+  .kpi .delta { font-size: 12px; margin-top: 4px; }
+  .kpi .delta.pos { color: var(--accent); }
+  .kpi .delta.neg { color: var(--danger); }
+  .kpi .delta.warn { color: var(--warn); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table th, table td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+  table th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  table tr:hover td { background: rgba(96, 165, 250, 0.04); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.good { color: var(--accent); font-weight: 600; }
+  td.bad { color: var(--danger); font-weight: 600; }
+  td.warn { color: var(--warn); font-weight: 600; }
+
+  ul.list { padding-left: 20px; margin: 8px 0; }
+  ul.list li { margin: 6px 0; }
+  ul.list li::marker { color: var(--accent-2); }
+
+  .pill {
+    display: inline-block; padding: 3px 8px; border-radius: 999px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  .pill.green { background: rgba(74,222,128,0.12); color: var(--accent); border: 1px solid rgba(74,222,128,0.3); }
+  .pill.blue { background: rgba(96,165,250,0.12); color: var(--accent-2); border: 1px solid rgba(96,165,250,0.3); }
+  .pill.amber { background: rgba(245,158,11,0.12); color: var(--warn); border: 1px solid rgba(245,158,11,0.3); }
+  .pill.red { background: rgba(239,68,68,0.12); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); }
+
+  .alert {
+    border-left: 4px solid var(--warn);
+    background: rgba(245,158,11,0.06);
+    padding: 14px 16px; border-radius: 6px; margin: 14px 0;
+  }
+  .alert.danger { border-left-color: var(--danger); background: rgba(239,68,68,0.06); }
+  .alert.good { border-left-color: var(--accent); background: rgba(74,222,128,0.06); }
+  .alert.info { border-left-color: var(--accent-2); background: rgba(96,165,250,0.06); }
+  .alert b { color: var(--text); }
+
+  .horror {
+    background: var(--panel); border: 1px solid var(--border); border-left: 4px solid var(--danger);
+    border-radius: 10px; padding: 16px; margin-bottom: 14px;
+  }
+  .horror h4 { margin: 0 0 6px; color: var(--danger); font-size: 16px; }
+  .horror .meta { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+  .horror p { margin: 6px 0; font-size: 14px; }
+  .horror .lesson { background: rgba(96,165,250,0.06); border-left: 3px solid var(--accent-2);
+    padding: 8px 12px; border-radius: 4px; margin-top: 10px; font-size: 13px; }
+
+  .chart-wrap { position: relative; height: 280px; }
+  .chart-wrap.tall { height: 340px; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 24px 32px; color: var(--muted); font-size: 12px;
+    text-align: center; margin-top: 40px;
+  }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 16px; }
+
+  .scenario {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+  }
+  .scenario h4 { margin-top: 0; }
+  .scenario.base { border-top: 3px solid var(--accent-2); }
+  .scenario.bear { border-top: 3px solid var(--danger); }
+  .scenario.bull { border-top: 3px solid var(--accent); }
+  .scenario .num { font-size: 22px; font-weight: 700; margin: 6px 0; }
+  .scenario .label { color: var(--muted); font-size: 12px; }
+
+  .team-card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .team-card .role { color: var(--accent-2); font-weight: 700; font-size: 15px; }
+  .team-card .who { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .team-card .why { font-size: 13px; margin-top: 8px; }
+
+  .footnote { font-size: 12px; color: var(--muted); margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">Análisis de Oportunidad de Inversión</span>
+    <h1>IRENDAGUAZU — Propiedad agrícola de PRINA SRL</h1>
+    <p class="sub">Análisis de oportunidad sobre una propiedad agropecuaria de 2.203,81 ha en el Chaco cruceño (Charagua, Santa Cruz, Bolivia), con 753 ha habilitadas, vocación agrícola y potencial de riego por pivote. Base: Avalúo Banco BISA (Dic-2024) + Estudio de Suelos Pivote 8 (PRINA, 2022).</p>
+    <div class="meta">
+      <div><b>Ubicación</b><br/>Charagua, Cordillera, Santa Cruz — 82,85 km al sur de Pailón</div>
+      <div><b>Superficie</b><br/>2.203,81 ha (753,36 ha habilitadas)</div>
+      <div><b>Avalúo Comercial</b><br/>Bs 14.589.107 ≈ USD 2,13 MM</div>
+      <div><b>Solicitante</b><br/>EMPRESA PRINA S.R.L.</div>
+      <div><b>Fecha del análisis</b><br/>Mayo 2026</div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#resumen">Resumen Ejecutivo</a>
+    <a href="#investigacion">Investigación</a>
+    <a href="#financiero">Financiero & KPIs</a>
+    <a href="#advertencias">Advertencias</a>
+    <a href="#upside">Upside</a>
+    <a href="#equipo">Equipo</a>
+    <a href="#conclusion">Conclusión</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============== RESUMEN EJECUTIVO ============== -->
+<section id="resumen">
+  <h2><span class="num">0</span> Resumen Ejecutivo</h2>
+  <p class="lead">PRINA opera una propiedad rural integrada en el municipio de Charagua, con infraestructura agrícola visible en las fotos (silos, depósitos de bolsas, galpón de maquinaria, pivotes en operación). El avalúo del Banco BISA fija el valor comercial en USD 2,13 MM, equivalente a ≈ <b>USD 965 / ha promedio</b> (terreno con 56% de monte). El verdadero valor está en las 753 ha habilitadas y en el desarrollo del riego, no en el bruto.</p>
+
+  <div class="grid cols-4">
+    <div class="card kpi">
+      <div class="label">Valor Comercial</div>
+      <div class="val">USD 2,13 MM</div>
+      <div class="delta">Bs 14.589.107 (TC 6,86)</div>
+    </div>
+    <div class="card kpi">
+      <div class="label">Valor / ha (bruto)</div>
+      <div class="val">USD 965</div>
+      <div class="delta">incluye 1.234 ha de monte</div>
+    </div>
+    <div class="card kpi">
+      <div class="label">Valor / ha habilitada</div>
+      <div class="val">USD 2.823</div>
+      <div class="delta warn">benchmark zona: USD 2.000–6.000</div>
+    </div>
+    <div class="card kpi">
+      <div class="label">Venta rápida</div>
+      <div class="val">USD 1,59 MM</div>
+      <div class="delta neg">-25% vs valor comercial</div>
+    </div>
+  </div>
+
+  <div class="alert info" style="margin-top: 18px;">
+    <b>Tesis de inversión en una línea:</b> Comprar/financiar tierra con monte (USD 600–700/ha) y capturar el delta de valor al habilitarla + irrigarla (objetivo USD 5.000–8.000/ha). El play no es agrícola, es <b>de revalorización inmobiliaria con flujo agrícola que paga el carry</b>.
+  </div>
+
+  <div class="alert danger">
+    <b>Bandera roja visible desde la portada:</b> La propiedad ya tiene <b>4 gravámenes a favor de Banco BISA</b> al 20/11/2024. El avalúo es para uso bancario (ASFI), no para una venta privada — el solicitante (PRINA) está buscando financiamiento, no socio capitalista necesariamente. <b>Aclarar la estructura antes de modelar nada.</b>
+  </div>
+</section>
+
+<!-- ============== INVESTIGACIÓN ============== -->
+<section id="investigacion">
+  <h2><span class="num">1</span> Investigación del Activo y del Sector</h2>
+  <p class="lead">Tres lentes: (1) qué es la propiedad, (2) dónde está parada en el contexto agroclimático y logístico, (3) cómo se compara el sector agrícola del Este cruceño.</p>
+
+  <h3>1.1 Composición del activo (según Avalúo Dic-24)</h3>
+  <div class="grid cols-2">
+    <div class="card">
+      <table>
+        <thead><tr><th>Uso de suelo</th><th class="num">Hectáreas</th><th class="num">% del total</th></tr></thead>
+        <tbody>
+          <tr><td>Habilitada para agricultura</td><td class="num good">739,27</td><td class="num">33,5%</td></tr>
+          <tr><td>Caminos internos + deslinde</td><td class="num">12,58</td><td class="num">0,6%</td></tr>
+          <tr><td>Campamento</td><td class="num">1,51</td><td class="num">0,1%</td></tr>
+          <tr><td>Cañada</td><td class="num">6,39</td><td class="num">0,3%</td></tr>
+          <tr><td>Cortinas rompevientos</td><td class="num">210,49</td><td class="num">9,5%</td></tr>
+          <tr><td>Monte (reserva legal)</td><td class="num warn">1.233,57</td><td class="num">56,0%</td></tr>
+          <tr style="border-top: 2px solid var(--border);"><td><b>TOTAL</b></td><td class="num"><b>2.203,81</b></td><td class="num"><b>100%</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="chart-wrap"><canvas id="chartUsos"></canvas></div>
+    </div>
+  </div>
+
+  <h3>1.2 Infraestructura existente</h3>
+  <div class="grid cols-2">
+    <div class="card">
+      <h4>Construcciones (298 m² total)</h4>
+      <ul class="list">
+        <li>Vivienda principal — 211,7 m² (ladrillo, teja colonial, 2 dormitorios)</li>
+        <li>Vivienda secundaria — 63,18 m²</li>
+        <li>Caseta generador eléctrico — 13,4 m²</li>
+        <li>Galpón horno de barro — 9,45 m²</li>
+        <li>Corral de madera 50×40 m con embarcadero</li>
+      </ul>
+      <p class="footnote">Valor en libros: solo Bs 417.467 (USD 61 mil) — testimonial vs. valor del campo.</p>
+    </div>
+    <div class="card">
+      <h4>Servicios productivos</h4>
+      <ul class="list">
+        <li>2 pozos artesianos de 80 m + bomba sumergible</li>
+        <li>Tanque de cemento 50.000 L + tanque elevado 20.000 L</li>
+        <li>8 paneles solares (bombeo de agua)</li>
+        <li>3,5 km de cañería PVC 2" hacia bebederos</li>
+        <li>25 km de alambrado perimetral (5 hebras, postes de cuchi)</li>
+        <li>Tendido eléctrico trifásico en zona, antena celular</li>
+      </ul>
+      <p class="footnote">⚠️ <b>Lo que el avalúo NO incluye:</b> los pivotes, silos y planta de acondicionamiento que se ven en las fotos. Aclarar si pertenecen al activo o a una sociedad operadora separada.</p>
+    </div>
+  </div>
+
+  <h3>1.3 Calidad del suelo (Estudio Pivote 8, Sep-2022)</h3>
+  <div class="card">
+    <p>Estudio realizado por el equipo de Agroprecisión Mekaddesh sobre 121,97 ha del Pivote 8. Identifica <b>tres ambientes productivos (A/B/C)</b>:</p>
+    <table>
+      <thead><tr><th>Ambiente</th><th>Textura</th><th>Drenaje</th><th>Índice verde</th><th>Almacenaje H₂O</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill green">A — Alto</span></td><td>Intermedia, arena en subsuelo</td><td class="good">Bueno (relieve alto)</td><td>Alto</td><td>Bajo (requiere riego frecuente)</td></tr>
+        <tr><td><span class="pill blue">B — Medio</span></td><td>Intermedia a pesada</td><td>Moderado (depresiones leves)</td><td>Medio</td><td>Bueno</td></tr>
+        <tr><td><span class="pill amber">C — Bajo</span></td><td>Semipesada a pesada</td><td class="warn">Malo (encharcamiento)</td><td>Bajo</td><td>Alto pero anegamiento</td></tr>
+      </tbody>
+    </table>
+    <h4>Diagnóstico químico</h4>
+    <ul class="list">
+      <li><b>pH alcalino</b> — fuera del óptimo agrícola (6,0–6,8)</li>
+      <li>Niveles medio-altos de N, P, K, S — fertilidad química aceptable</li>
+      <li class="warn"><b>Problema crítico: SODICIDAD</b> — alto contenido de sodio, requiere corrección con <b>Yeso Agrícola</b> en tasa variable</li>
+      <li>Compactación detectada en segunda capa del perfil (penetrómetro &gt; 2.000 kPa)</li>
+      <li>Fisiografía: Llanuras de Inundación Subreciente del Río Grande, profundidad &gt; 1 m</li>
+    </ul>
+    <p class="footnote">Objetivo de rendimiento de maíz en el estudio: <b>8 t/ha</b> bajo manejo nutricional ajustado.</p>
+  </div>
+
+  <h3>1.4 Contexto regional — Eje Pailón–Charagua–Cuatro Cañadas</h3>
+  <div class="card">
+    <p>La zona es la frontera agrícola más dinámica de Bolivia y forma parte del corredor sojero/maicero del Este cruceño. Características relevantes:</p>
+    <div class="grid cols-2">
+      <ul class="list">
+        <li><b>Precipitación:</b> ~1.000 mm/año (subhúmeda) — riego es <b>diferencial competitivo</b>, no opcional, en años Niña</li>
+        <li><b>Suelos:</b> Llanuras aluviales del Río Grande, profundos pero variables</li>
+        <li><b>Logística:</b> 82,5 km de camino de tierra al asfalto — riesgo en época húmeda</li>
+        <li><b>Distancia Santa Cruz:</b> 133 km — flete competitivo</li>
+      </ul>
+      <ul class="list">
+        <li><b>Comunidades vecinas:</b> TCO Isoso (territorio indígena guaraní) al norte y oeste</li>
+        <li><b>Categoría PLUS:</b> GE-2 AR (ganadería extensiva con potencial de riego) — habilitación agrícola requirió cambio de uso</li>
+        <li><b>Energía:</b> trifásica disponible — habilita pivotes eléctricos</li>
+        <li><b>Servicios:</b> señal celular vía repetidora</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>1.5 Sistema de cultivo observado</h3>
+  <div class="card">
+    <p>Las 3 campañas previas rotaron <b>sorgo, chía, soya y maní</b>. Al momento de la inspección, lotes con rastrojo de chía + coberturas + 6 tablones de sorgo. Las fotos muestran adicionalmente:</p>
+    <ul class="list">
+      <li>Planta de acondicionamiento de granos con silos verticales (5+ unidades, capacidad estimada 500–800 t c/u)</li>
+      <li>Depósito refrigerado/seco para bolsas (estimado 1.500–3.000 t en bolsas, posiblemente maní o chía)</li>
+      <li>Galpón de maquinaria con sembradora neumática JD y tolva</li>
+      <li>Vista aérea: 6+ pivotes circulares ya en operación con cultivos verdes</li>
+    </ul>
+    <p class="footnote">→ Esto indica que <b>PRINA es una operación integrada</b> con post-cosecha propia, no un simple productor primario. La estrategia del avalúo (subvalorar mejoras a Bs 417 mil) implica que estos activos podrían pertenecer a otra entidad o no estar incluidos en la garantía.</p>
+  </div>
+</section>
+
+<!-- ============== FINANCIERO ============== -->
+<section id="financiero">
+  <h2><span class="num">2</span> Análisis Financiero & KPIs Sectoriales</h2>
+  <p class="lead">Comparamos las cifras del avalúo y el potencial productivo contra benchmarks del sector agrícola del Este cruceño y de operaciones similares en el Cono Sur.</p>
+
+  <h3>2.1 Tabla de valores oficiales (Avalúo BISA)</h3>
+  <div class="card">
+    <table>
+      <thead><tr><th>Concepto</th><th class="num">Bolivianos</th><th class="num">USD (TC 6,86)</th><th class="num">USD / ha</th></tr></thead>
+      <tbody>
+        <tr><td>Valor Comercial</td><td class="num">14.589.107</td><td class="num">2.126.692</td><td class="num">965</td></tr>
+        <tr><td>Valor Neto de Realización</td><td class="num">12.400.741</td><td class="num">1.807.688</td><td class="num">820</td></tr>
+        <tr><td>Valor de Reposición</td><td class="num">15.105.323</td><td class="num">2.202.000</td><td class="num">999</td></tr>
+        <tr><td>Valor de Venta Rápida</td><td class="num warn">10.941.830</td><td class="num warn">1.594.946</td><td class="num warn">724</td></tr>
+        <tr><td>Valor de la Tierra (sólo)</td><td class="num">14.171.640</td><td class="num">2.065.852</td><td class="num">937</td></tr>
+        <tr><td>Valor de Infraestructura</td><td class="num">417.467</td><td class="num">60.855</td><td class="num">28</td></tr>
+      </tbody>
+    </table>
+    <p class="footnote">El valuador menciona un rango de mercado de Bs 4.116–4.802/ha para tierras <b>con monte</b> (USD 600–700/ha). Las 753 ha habilitadas explican el premium hasta los Bs 6.430/ha promedio.</p>
+  </div>
+
+  <h3>2.2 Benchmarks del sector — precio de tierra</h3>
+  <div class="grid cols-2">
+    <div class="card">
+      <div class="chart-wrap"><canvas id="chartPrecioTierra"></canvas></div>
+    </div>
+    <div class="card">
+      <h4>Comparables zona Este cruceño (USD/ha)</h4>
+      <table>
+        <thead><tr><th>Tipo de tierra</th><th class="num">Rango USD/ha</th></tr></thead>
+        <tbody>
+          <tr><td>Monte virgen sin habilitar</td><td class="num">300 – 700</td></tr>
+          <tr><td>Habilitada, secano</td><td class="num">2.000 – 3.500</td></tr>
+          <tr><td><b>IRENDAGUAZU (promedio)</b></td><td class="num good"><b>965</b></td></tr>
+          <tr><td>Habilitada con cortinas + caminos</td><td class="num">3.000 – 5.000</td></tr>
+          <tr><td>Bajo riego por pivote, operativo</td><td class="num">5.000 – 8.000</td></tr>
+          <tr><td>Tierra premium en valles (con riego)</td><td class="num">10.000 – 15.000</td></tr>
+        </tbody>
+      </table>
+      <p class="footnote">Fuentes: eju.tv, datos CAO, comparables de mercado Pailón-Cuatro Cañadas.</p>
+    </div>
+  </div>
+
+  <h3>2.3 Rendimientos y márgenes por cultivo</h3>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Cultivo</th>
+          <th class="num">Rinde secano (t/ha)</th>
+          <th class="num">Rinde pivote (t/ha)</th>
+          <th class="num">Precio FOB (USD/t)</th>
+          <th class="num">Costo prod. (USD/ha)</th>
+          <th class="num">Margen bruto secano</th>
+          <th class="num">Margen bruto pivote</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Soya verano</td><td class="num">2,0 – 2,8</td><td class="num">3,8 – 4,5</td><td class="num">370 – 420</td><td class="num">450 – 600</td><td class="num warn">+250 a +500</td><td class="num good">+900 a +1.300</td></tr>
+        <tr><td>Maíz</td><td class="num">3,0 – 5,0</td><td class="num">8,0 – 12,0</td><td class="num">160 – 200</td><td class="num">500 – 750</td><td class="num warn">+0 a +400</td><td class="num good">+750 a +1.600</td></tr>
+        <tr><td>Sorgo</td><td class="num">2,5 – 4,0</td><td class="num">5,0 – 7,0</td><td class="num">170 – 220</td><td class="num">350 – 500</td><td class="num">+100 a +400</td><td class="num good">+500 a +900</td></tr>
+        <tr><td>Chía</td><td class="num">0,5 – 0,9</td><td class="num">0,9 – 1,3</td><td class="num">1.200 – 1.800</td><td class="num">600 – 900</td><td class="num good">+400 a +900</td><td class="num good">+800 a +1.500</td></tr>
+        <tr><td>Maní</td><td class="num">2,0 – 3,0</td><td class="num">3,0 – 4,5</td><td class="num">900 – 1.300</td><td class="num">900 – 1.400</td><td class="num good">+1.000 a +2.000</td><td class="num good">+1.800 a +3.500</td></tr>
+      </tbody>
+    </table>
+    <p class="footnote">Cifras orientativas zona Este Santa Cruz, campaña 2024/25. Soya y maíz fueron <b>los más golpeados por sequía 2023/24</b>: CAO reportó caída productiva del 17,07% y rinde promedio soya 1,19 t/ha (campaña invierno 2024). Esto refuerza la tesis del riego.</p>
+  </div>
+
+  <h3>2.4 Comparativa de rendimiento secano vs pivote</h3>
+  <div class="card">
+    <div class="chart-wrap tall"><canvas id="chartRindes"></canvas></div>
+  </div>
+
+  <h3>2.5 Economía unitaria del campo (estimación para IRENDAGUAZU)</h3>
+  <div class="grid cols-3">
+    <div class="scenario bear">
+      <h4>Escenario Conservador</h4>
+      <div class="label">753 ha en secano, rotación actual</div>
+      <div class="num">USD 220.000 / año</div>
+      <div class="label">EBITDA agrícola estimado</div>
+      <hr style="border-color: var(--border); margin: 10px 0;"/>
+      <p style="font-size: 13px; margin: 0;">Margen bruto: USD 350–400/ha &times; 753 ha &minus; estructura USD 60 mil. <b>ROIC sobre USD 2,1 MM ≈ 10%.</b> Vulnerable a 1 sequía cada 3 años (Bolivia 2023-24 fue catastrófica).</p>
+    </div>
+    <div class="scenario base">
+      <h4>Escenario Base</h4>
+      <div class="label">500 ha pivote + 253 ha secano</div>
+      <div class="num">USD 650.000 / año</div>
+      <div class="label">EBITDA agrícola estimado</div>
+      <hr style="border-color: var(--border); margin: 10px 0;"/>
+      <p style="font-size: 13px; margin: 0;">Requiere CAPEX adicional USD 750k–1,0 MM en pivotes (USD 1.500/ha instalado). Margen pivote ~USD 1.100/ha + secano ~USD 350/ha. <b>ROIC sobre USD 3,1 MM ≈ 21%.</b></p>
+    </div>
+    <div class="scenario bull">
+      <h4>Escenario Optimista</h4>
+      <div class="label">753 ha bajo riego + cultivos premium</div>
+      <div class="num">USD 1,1 MM / año</div>
+      <div class="label">EBITDA agrícola estimado</div>
+      <hr style="border-color: var(--border); margin: 10px 0;"/>
+      <p style="font-size: 13px; margin: 0;">Doble cosecha (verano+invierno), incluye maní y chía irrigados. CAPEX total acumulado ≈ USD 3,5 MM. <b>ROIC ≈ 25–30%</b> + revalorización de tierra a USD 5–7 mil/ha.</p>
+    </div>
+  </div>
+
+  <h3>2.6 Valuación: ¿pagar el avalúo es buen negocio?</h3>
+  <div class="card">
+    <p>Si pagáramos los <b>USD 2,13 MM</b> del valor comercial e invirtiéramos los pivotes necesarios para llevar las 753 ha a riego (≈ USD 1,1 MM adicionales), la inversión total sería <b>USD 3,2 MM</b>. Contra un EBITDA base de USD 650k → <b>múltiplo de entrada 4,9x EBITDA</b>, razonable para activo real con upside inmobiliario.</p>
+    <div class="alert good">
+      <b>Cap rate implícito (solo valor tierra):</b> EBITDA base / Valor activo = 650 / 3.200 = <b>~20%</b> en steady-state. Para Bolivia, donde el costo de capital sobera-corregido se sitúa entre 12–15%, esto deja <b>spread de 5–8 puntos</b> — si y solo si las hipótesis de pivote se materializan.
+    </div>
+  </div>
+</section>
+
+<!-- ============== ADVERTENCIAS ============== -->
+<section id="advertencias">
+  <h2><span class="num">3</span> Lo que puede salir mal — Casos Documentados</h2>
+  <p class="lead">El agro de gran escala es <b>el negocio que más empresarios millonarios ha hecho dejar de ser millonarios en LATAM</b>. Las quiebras siguen un patrón muy claro: sobre-apalancamiento + concentración geográfica + falta de cobertura climática. Estos son los antecedentes que un comité de inversión debe revisar:</p>
+
+  <div class="horror">
+    <h4>1. Vicentin (Argentina, 2019–presente)</h4>
+    <div class="meta">Default ≈ USD 1.500 MM • Concurso de acreedores • Caso testigo del agro LATAM</div>
+    <p>Gigante exportador argentino con 90 años de historia. Quebró por sobre-endeudamiento dolarizado para financiar trading de granos. Cesó pagos a 2.600 productores acreedores. Disputa judicial sigue abierta 6 años después.</p>
+    <div class="lesson"><b>Lección IRENDAGUAZU:</b> el riesgo no está sólo en el campo — está en la <b>estructura financiera del operador</b>. Si PRINA tiene deuda dolarizada en un sistema bancario boliviano con riesgo cambiario latente, es Vicentin a escala.</div>
+  </div>
+
+  <div class="horror">
+    <h4>2. Los Grobo + Agrofina (Argentina, 2024–2025)</h4>
+    <div class="meta">Default consolidado ≈ USD 207 MM • Concurso preventivo Feb-2025</div>
+    <p>Una de las agropecuarias más sofisticadas del Cono Sur. Modelo "campo en red" + apalancamiento bursátil. Cayó cuando se cerró el grifo de financiamiento y la sequía 2022/23 colapsó las cobranzas. Pérdidas consolidadas de ARS 42.700 MM. Productores bloquearon sede para reclamar pagos.</p>
+    <div class="lesson"><b>Lección:</b> sofisticación operativa <b>NO</b> reemplaza disciplina de balance. Cuando viene la sequía, el cash flow opera primero y el banco después.</div>
+  </div>
+
+  <div class="horror">
+    <h4>3. Sequía 2023–2024 en Bolivia (sector difuso)</h4>
+    <div class="meta">CAO: caída productiva 17,07% • Rendimiento soya invierno 2024 = 1,19 t/ha (-37%)</div>
+    <p>La peor sequía en una década en el Este cruceño. Productores quebraron por incapacidad de cubrir costos de USD 450/ha con rindes de 1,2 t/ha &times; USD 380/t = USD 456/ha. <b>Margen ≈ 0 o negativo</b>. Las pérdidas en el sistema financiero boliviano se reflejaron en mora agropecuaria creciente reportada por ASFI.</p>
+    <div class="lesson"><b>Lección directa para IRENDAGUAZU:</b> esta propiedad <b>vivió la sequía como secano</b>. Preguntar: ¿qué pasó con el cash flow 2023-24 de PRINA? ¿Los 4 gravámenes BISA son refinanciaciones de esa crisis?</div>
+  </div>
+
+  <div class="horror">
+    <h4>4. Adecoagro / SLC / problemática del expansionismo (Brasil-Argentina, varios años)</h4>
+    <div class="meta">Casos de retracción tras expansión agresiva en frontera agrícola</div>
+    <p>Empresas que pagaron premiums por tierra nueva y descubrieron que <b>el costo de habilitación + corrección de sodicidad + 3 años de "saneo" del suelo</b> dejaron yields decepcionantes. Sumado a ciclos de precios bajos, varias dejaron campos en el camino.</p>
+    <div class="lesson"><b>Lección:</b> el estudio de suelos del Pivote 8 menciona explícitamente <b>SODICIDAD</b> y necesidad de yeso agrícola. Esto es <b>3–5 campañas de inversión correctiva antes de ver rinde estable</b>. No es un activo "plug and play".</div>
+  </div>
+
+  <div class="horror">
+    <h4>5. Conflictos con TCOs / Tierras Comunitarias de Origen</h4>
+    <div class="meta">Riesgo legal-político específico de la zona</div>
+    <p>IRENDAGUAZU colinda <b>al norte y oeste con TCO Isoso</b> (territorio guaraní). Bolivia tiene precedentes de disputas territoriales, demandas por reversión de tierras y bloqueos de caminos vecinales cuando hay tensión con comunidades originarias. La política agraria boliviana ha tenido olas de "saneamiento revisor".</p>
+    <div class="lesson"><b>Lección:</b> validar título ejecutorial (MPA-NAL-000330) con due diligence legal independiente. El certificado catastral es de 2018 — han pasado 7 años. Reconfirmar que no hay procesos de reversión INRA abiertos.</div>
+  </div>
+
+  <div class="horror">
+    <h4>6. Riesgo de habilitación reciente (731 ha cambiadas de uso)</h4>
+    <div class="meta">Compliance ambiental y mercado de exportación</div>
+    <p>El avalúo dice "739,2729 ha se cambiaron de uso de suelo de pastos cultivados a agricultura". En contextos donde se exporta a UE (Reglamento EUDR 2024) o a buyers que exigen due diligence de deforestación, esto puede <b>excluir la producción del mercado premium</b>. Multas y bloqueos de comercialización son riesgos crecientes desde 2024.</p>
+    <div class="lesson"><b>Lección:</b> verificar fecha exacta de desmonte de cada lote. Lotes desmontados después del corte EUDR (2020) podrían quedar fuera de mercados europeos.</div>
+  </div>
+
+  <div class="horror">
+    <h4>7. Riesgo macro Bolivia: brecha cambiaria y escasez de dólares</h4>
+    <div class="meta">2023–2026 • Restricciones de acceso a USD para importar insumos</div>
+    <p>Desde 2023 Bolivia atraviesa crisis aguda de reservas. El BCB ha racionado dólares oficiales, los insumos agrícolas se importan vía mercado paralelo con sobrecosto de 30–60%. Cualquier modelo financiero en USD oficiales <b>subestima drásticamente los costos reales</b> de producción.</p>
+    <div class="lesson"><b>Lección:</b> modelar con TC paralelo (no oficial 6,86). Insumos = 60% del costo agrícola. Una brecha de 40% destruye márgenes.</div>
+  </div>
+
+  <div class="horror">
+    <h4>8. Concentración de garantías en un solo banco (Banco BISA)</h4>
+    <div class="meta">4 gravámenes activos al 20/11/2024</div>
+    <p>Tener todas las garantías con un único acreedor reduce optionality. Si BISA ajusta criterios de crédito o cambia clasificación de riesgo, no hay segunda mesa de negociación.</p>
+    <div class="lesson"><b>Lección:</b> pedir certificado de gravámenes actualizado a fecha del análisis, montos de cada gravamen y vencimiento de cada operación.</div>
+  </div>
+
+  <div class="alert danger">
+    <b>Patrón común a TODOS los horror stories:</b> apalancamiento + sequía + insumos caros + concentración de acreedor. IRENDAGUAZU tiene <b>4 de los 4 factores presentes</b> en su lectura actual. No es descartable como inversión, pero exige diligencia agresiva.
+  </div>
+</section>
+
+<!-- ============== UPSIDE ============== -->
+<section id="upside">
+  <h2><span class="num">4</span> Upside — Qué tendría que salir bien</h2>
+  <p class="lead">Si el comité aprueba avanzar, el premio está en convertir un activo bancarizado para garantía en un <b>activo productivo bajo riego con doble valorización</b>: por flujo agrícola y por revalorización de tierra.</p>
+
+  <h3>4.1 Palancas de creación de valor</h3>
+  <div class="grid cols-2">
+    <div class="card">
+      <h4>📈 Palancas que mueven más valor</h4>
+      <ul class="list">
+        <li><b>Riego por pivote en 500–753 ha:</b> multiplica rinde 2–3x, baja volatilidad climática, abre doble cosecha. <b>Impacto: +USD 600–900/ha/año.</b></li>
+        <li><b>Corrección de sodicidad con yeso agrícola:</b> recupera +20% rinde estructural en 3 años. <b>Impacto: +USD 150/ha/año.</b></li>
+        <li><b>Habilitar las 1.234 ha de monte remanente (lo permitido por ley):</b> bajo PLUS GE-2 AR y respetando reservas legales, podrían sumarse ~300–500 ha adicionales productivas. <b>Impacto: +USD 1–1,5 MM en valor patrimonial.</b></li>
+        <li><b>Integración vertical (silos + post-cosecha en sitio):</b> retención de margen de 8–12% adicional (lo que normalmente se entrega al acopiador).</li>
+        <li><b>Cultivos premium (chía, maní):</b> márgenes 3–5x soya. PRINA ya tiene experiencia.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🎯 Triggers de valuación inmobiliaria</h4>
+      <ul class="list">
+        <li>Cada pivote operativo agrega ~USD 3.000–4.000/ha al valor de venta de esa fracción</li>
+        <li>3 campañas exitosas estabilizan la valuación a comparable de zona productiva</li>
+        <li>Asfaltado de la ruta Pailón-sur (proyecto público en discusión) podría duplicar el valor en un evento</li>
+        <li>Integración a una red logística (rieleras / hidrovía Paraguay) — opcionalidad larga</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>4.2 Modelo de upside (5 años, base case)</h3>
+  <div class="card">
+    <div class="chart-wrap tall"><canvas id="chartUpside"></canvas></div>
+  </div>
+
+  <h3>4.3 Tabla resumen de retornos por escenario</h3>
+  <div class="card">
+    <table>
+      <thead><tr><th>Escenario</th><th class="num">CAPEX total</th><th class="num">EBITDA año 5</th><th class="num">Valor terminal tierra</th><th class="num">TIR equity (5a)</th><th>Probabilidad</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill red">Bear</span> — 2 sequías + sodicidad no resuelta</td><td class="num">2,3 MM</td><td class="num">100 k</td><td class="num">1,8 MM</td><td class="num bad">-5% a +3%</td><td>25%</td></tr>
+        <tr><td><span class="pill blue">Base</span> — riego en 500 ha, ejecución normal</td><td class="num">3,2 MM</td><td class="num">650 k</td><td class="num">4,5 MM</td><td class="num warn">14–18%</td><td>50%</td></tr>
+        <tr><td><span class="pill green">Bull</span> — riego total + cultivos premium</td><td class="num">3,8 MM</td><td class="num">1,1 MM</td><td class="num">6,8 MM</td><td class="num good">26–32%</td><td>20%</td></tr>
+        <tr><td><span class="pill amber">Home run</span> — asfaltado + reclasificación PLUS</td><td class="num">3,8 MM</td><td class="num">1,1 MM</td><td class="num">10–12 MM</td><td class="num good">45%+</td><td>5%</td></tr>
+      </tbody>
+    </table>
+    <p class="footnote">Cifras en USD MM. TIR equity asumiendo 30% equity / 70% deuda con tasa 9% USD.</p>
+  </div>
+
+  <div class="alert good">
+    <b>TIR esperada ponderada:</b> 0,25·(-1%) + 0,50·(16%) + 0,20·(29%) + 0,05·(45%) ≈ <b>15,8% en USD</b> a 5 años. Por encima del costo de capital ajustado por riesgo Bolivia (12–14%). El upside está, pero el margen no es enorme.
+  </div>
+</section>
+
+<!-- ============== EQUIPO ============== -->
+<section id="equipo">
+  <h2><span class="num">5</span> Equipo Recomendado para Diligencia y Operación</h2>
+  <p class="lead">Esta operación no se puede evaluar bien con un equipo financiero solamente. Necesita 4 frentes en paralelo durante 6–8 semanas, y un equipo permanente más reducido para operación.</p>
+
+  <h3>5.1 Equipo de Due Diligence (pre-cierre, 60–90 días)</h3>
+  <div class="grid cols-2">
+    <div class="team-card">
+      <div class="role">🏛️ Abogado agrario boliviano</div>
+      <div class="who">Estudio jurídico con presencia en Santa Cruz (no encargar a corresponsales sólo)</div>
+      <div class="why">Validar título ejecutorial, certificado catastral 2018, ausencia de procesos INRA, gravámenes BISA exactos, conflictos con TCO Isoso. <b>Sin esto, no se firma nada.</b></div>
+    </div>
+    <div class="team-card">
+      <div class="role">🌾 Ingeniero agrónomo senior (zonal)</div>
+      <div class="who">15+ años en el Este cruceño, idealmente con experiencia en pivote</div>
+      <div class="why">Verificar in-situ las 753 ha habilitadas, revalidar el estudio de suelos 2022 (3 años de antigüedad — pudo cambiar), validar potencial real de yeso agrícola, costos de habilitar las 300–500 ha adicionales.</div>
+    </div>
+    <div class="team-card">
+      <div class="role">📊 Analista financiero LBO / agro</div>
+      <div class="who">Modelaje con sensibilidad a precio commodity + clima + FX paralelo</div>
+      <div class="why">Construir modelo trimestral con escenarios estocásticos (Monte Carlo de precios y rinde), debt waterfall, covenants. No conformarse con modelo determinístico.</div>
+    </div>
+    <div class="team-card">
+      <div class="role">🛰️ Especialista en geomática / GIS</div>
+      <div class="who">Acceso a imágenes Sentinel/Landsat históricas + análisis NDVI multianual</div>
+      <div class="why">Validar historia productiva por satélite (NDVI 5–10 años), confirmar fechas de desmonte para compliance EUDR, dimensionar lo realmente cultivado vs. lo declarado en avalúo.</div>
+    </div>
+    <div class="team-card">
+      <div class="role">🔧 Tasador agropecuario independiente</div>
+      <div class="who">No vinculado a BISA — segunda opinión obligatoria</div>
+      <div class="why">El avalúo lo encargó el solicitante para fines bancarios. <b>Una segunda valuación con criterios de inversor</b> (no de garantía) suele dar -15% a -30% del oficial.</div>
+    </div>
+    <div class="team-card">
+      <div class="role">🏦 Asesor de estructuración financiera</div>
+      <div class="who">Familiaridad con banca boliviana y restricción cambiaria 2023–2026</div>
+      <div class="why">Definir si entramos como compra directa, fideicomiso, joint venture con PRINA, deuda mezzanine, o asunción de deuda BISA con descuento. Cada estructura tiene 5 problemas distintos.</div>
+    </div>
+  </div>
+
+  <h3>5.2 Equipo operativo (post-cierre, permanente)</h3>
+  <div class="grid cols-3">
+    <div class="team-card">
+      <div class="role">👨‍🌾 Gerente de campo (full-time, residente)</div>
+      <div class="who">Agrónomo con 20+ años, gente del Chaco/Pailón</div>
+      <div class="why">No se gestiona un campo de 753 ha desde Santa Cruz capital. Necesita estar en obra.</div>
+    </div>
+    <div class="team-card">
+      <div class="role">💧 Especialista en riego por pivote</div>
+      <div class="who">Idealmente egresado de programas Valley/Lindsay/Bauer con experiencia local</div>
+      <div class="why">El cuello de botella del proyecto es la conversión a riego. Mal diseño hidráulico = 10 años perdidos.</div>
+    </div>
+    <div class="team-card">
+      <div class="role">📈 Trader / responsable comercial</div>
+      <div class="who">Red con acopiadores en Pailón + exportadores</div>
+      <div class="why">El 25% del retorno está en cuándo y a quién vendés. Vender bien chía y maní (cultivos especiales) requiere conexiones específicas.</div>
+    </div>
+    <div class="team-card">
+      <div class="role">🧮 Controller financiero (part-time)</div>
+      <div class="who">Reporte mensual de cash, costos por lote, alertas de covenant</div>
+      <div class="why">La causa #1 de quiebras agrícolas no es operativa, es <b>tesorería ciega</b>. Reportería en tiempo real es no-negociable.</div>
+    </div>
+    <div class="team-card">
+      <div class="role">🛰️ Servicio de agricultura de precisión</div>
+      <div class="who">Externo (ej. el mismo equipo Mekaddesh que hizo el estudio 2022, o competidor)</div>
+      <div class="why">Estudio de suelos por lote, prescripciones de tasa variable, monitoreo NDVI campaña. Honora la inversión inicial.</div>
+    </div>
+    <div class="team-card">
+      <div class="role">⚖️ Counsel local on-call</div>
+      <div class="who">Tema indígena/ambiental/laboral en Santa Cruz</div>
+      <div class="why">Bolivia es jurisdicción donde los temas legales aparecen sin aviso. Tener bufete bajo retainer.</div>
+    </div>
+  </div>
+
+  <h3>5.3 Estructura de decisión recomendada</h3>
+  <div class="card">
+    <ul class="list">
+      <li><b>Comité de Inversión:</b> 3–5 personas, mayoría con experiencia agro o LATAM (no sólo finanzas). Reunión de approval de cierre y revisiones trimestrales.</li>
+      <li><b>Board operativo:</b> reunión mensual, foco en cash, clima, precios, ejecución de pivotes.</li>
+      <li><b>Comité de riesgo climático:</b> revisar trimestralmente cobertura (seguros multi-riesgo agrícola + forwards de precio).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============== CONCLUSIÓN ============== -->
+<section id="conclusion">
+  <h2><span class="num">6</span> Conclusión y Próximos Pasos</h2>
+  <div class="card">
+    <h3>Veredicto preliminar</h3>
+    <p>IRENDAGUAZU es una <b>oportunidad real pero condicional</b>. El activo está correctamente valuado por el banco para fines de garantía; como inversión, el premium está en ejecutar el plan de riego sobre tierra con sodicidad correctiva. La TIR esperada ponderada (~16% USD) supera el costo de capital pero <b>no por mucho</b>, y la dispersión entre escenarios es alta.</p>
+
+    <h3>4 preguntas que deben responderse antes de avanzar</h3>
+    <ol>
+      <li><b>¿Qué nos están vendiendo realmente?</b> ¿Compra de tierra? ¿Equity en PRINA SRL? ¿Asumir deuda BISA? La estructura cambia todo.</li>
+      <li><b>¿Los silos, pivotes y planta de las fotos están en la transacción o no?</b> El avalúo dice infraestructura por USD 60k, las fotos sugieren USD 1,5–3 MM en activos. Hay un gap enorme por explicar.</li>
+      <li><b>¿Cuál es el estado real de los 4 gravámenes BISA?</b> Montos, vencimientos, covenants, situación de mora.</li>
+      <li><b>¿Cuál fue el cash flow 2023–2024 de PRINA?</b> La peor sequía en 10 años pasó. Si sobrevivieron, podemos hablar. Si están refinanciando para sobrevivir, es otra conversación.</li>
+    </ol>
+
+    <h3>Recomendación</h3>
+    <div class="alert info">
+      <b>Avanzar a Fase II (due diligence completa)</b> con presupuesto de USD 40–80k y plazo de 60 días, con expectativa de no-decisión hasta tener las 4 respuestas anteriores. <b>NO firmar term sheet</b> hasta tener segunda valuación independiente y certificación de gravámenes al día.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Análisis preparado en Mayo 2026 · Basado en Avalúo Pericial BISA Nº 24-21 (Dic-2024) e Informe Final de Estudio de Suelos Pivote 8 PRINA (Sep-2022) · Cifras de mercado: CAO, ASFI, eju.tv, Publiagro, Vision360, prensa Cono Sur · Documento de trabajo, no constituye recomendación de inversión.
+</footer>
+
+<script>
+  Chart.defaults.color = '#93a1bf';
+  Chart.defaults.borderColor = '#1f2b48';
+  Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+
+  // Usos del suelo - donut
+  new Chart(document.getElementById('chartUsos'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Monte (reserva)', 'Habilitada agricultura', 'Cortinas', 'Otros (caminos, cañada, etc.)'],
+      datasets: [{
+        data: [1233.57, 739.27, 210.49, 20.48],
+        backgroundColor: ['#15803d', '#4ade80', '#a3e635', '#94a3b8'],
+        borderColor: '#0b1220',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 12, font: { size: 12 } } },
+        title: { display: true, text: 'Distribución del uso del suelo (ha)', color: '#e6ecf5', font: { size: 14, weight: 'bold' } }
+      }
+    }
+  });
+
+  // Precio tierra benchmark
+  new Chart(document.getElementById('chartPrecioTierra'), {
+    type: 'bar',
+    data: {
+      labels: ['Monte virgen', 'IRENDAGUAZU\n(promedio)', 'Habilitada\nsecano', 'Habilitada\ncon cortinas', 'Bajo riego\npivote', 'Premium valles\n+ riego'],
+      datasets: [{
+        label: 'USD / ha (rango bajo)',
+        data: [300, 965, 2000, 3000, 5000, 10000],
+        backgroundColor: '#60a5fa'
+      },{
+        label: 'USD / ha (rango alto)',
+        data: [700, 965, 3500, 5000, 8000, 15000],
+        backgroundColor: '#4ade80'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' },
+        title: { display: true, text: 'USD/ha — IRENDAGUAZU vs. mercado Este cruceño', color: '#e6ecf5', font: { size: 14, weight: 'bold' } }
+      },
+      scales: {
+        y: { ticks: { callback: v => 'USD ' + v.toLocaleString() } }
+      }
+    }
+  });
+
+  // Rindes secano vs pivote
+  new Chart(document.getElementById('chartRindes'), {
+    type: 'bar',
+    data: {
+      labels: ['Soya', 'Maíz', 'Sorgo', 'Chía', 'Maní'],
+      datasets: [{
+        label: 'Rinde secano (t/ha) — promedio',
+        data: [2.4, 4.0, 3.25, 0.7, 2.5],
+        backgroundColor: '#f59e0b'
+      },{
+        label: 'Rinde con pivote (t/ha) — promedio',
+        data: [4.15, 10.0, 6.0, 1.1, 3.75],
+        backgroundColor: '#4ade80'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' },
+        title: { display: true, text: 'Rendimiento por cultivo: secano vs. riego por pivote', color: '#e6ecf5', font: { size: 14, weight: 'bold' } }
+      },
+      scales: {
+        y: { title: { display: true, text: 't / ha', color: '#93a1bf' } }
+      }
+    }
+  });
+
+  // Upside proyectado a 5 años (caso base)
+  new Chart(document.getElementById('chartUpside'), {
+    type: 'line',
+    data: {
+      labels: ['Año 0', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+      datasets: [{
+        label: 'EBITDA acumulado (USD MM)',
+        data: [0, 0.2, 0.7, 1.5, 2.4, 3.4],
+        borderColor: '#4ade80',
+        backgroundColor: 'rgba(74,222,128,0.1)',
+        fill: true, tension: 0.3
+      },{
+        label: 'Valor activo (USD MM)',
+        data: [2.1, 2.4, 2.9, 3.6, 4.1, 4.5],
+        borderColor: '#60a5fa',
+        backgroundColor: 'rgba(96,165,250,0.1)',
+        fill: true, tension: 0.3
+      },{
+        label: 'CAPEX acumulado (USD MM)',
+        data: [0, 0.5, 1.0, 1.1, 1.1, 1.1],
+        borderColor: '#f59e0b',
+        backgroundColor: 'rgba(245,158,11,0.05)',
+        borderDash: [5,5], fill: false, tension: 0.2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' },
+        title: { display: true, text: 'Escenario base: trayectoria 5 años (USD MM)', color: '#e6ecf5', font: { size: 14, weight: 'bold' } }
+      },
+      scales: {
+        y: { title: { display: true, text: 'USD MM', color: '#93a1bf' } }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

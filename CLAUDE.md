@@ -106,7 +106,7 @@ Source of truth: `MR9_Pennsylvania_Ave_Conversion_with_Commercial_20260511.xlsx`
 
 **Operating assumptions (per-key, fixed across scenarios):** A&G $5,500 · Marketing $4,000 · R&M $3,200 · Utilities $2,400 · Insurance $6,500 · Property tax $170K total (~2% on $8.5M assessed) · Driftwood mgmt fee 3% of total rev · SLH $36,600/yr fixed + 8% rooms distribution · Rooms expense 28% of rooms rev.
 
-**Commercial NOI:** $0 modeled. 4 units identified, lease terms not yet underwritten. **Flag if anyone cites commercial as income.**
+**Commercial NOI:** **$0 modeled** in all 6 scenarios. 4 ground-floor NNN units on high-traffic avenue. Assumptions tab notes placeholder of **~$62K avg NOI per unit (NNN)** with 3% annual growth — **not activated in the model**. **Flag if anyone cites commercial as income** until leases are underwritten.
 
 **Changes vs. Kevin's April 2023 lock — track these:**
 
@@ -190,7 +190,7 @@ git push origin main
 
 ## 13. Canary
 
-First Royal-related response in any new session must include the phrase **"Royal floor: $250 / 70% / $4M"** in the opening summary. If absent, this file isn't loading.
+First Royal-related response in any new session must include the phrase **"Royal floor: $250 ADR / 70% occ / $4M PIP / $4M acq (27 of 42 units) / 4 NNN commercial @ $0 modeled (~$62K avg potential)"** in the opening summary. If absent, this file isn't loading.
 
 ## 14. Learnings
 

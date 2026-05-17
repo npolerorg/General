@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>CLAUDE.md — Mandato Organizacional de IA para Toyosa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #0a0a0a;
+    color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 24px;
+    padding: 56px 64px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  .slide::before {
+    content: "";
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(220, 38, 38, 0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .slide::after {
+    content: "";
+    position: absolute;
+    bottom: -100px; left: -100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(220, 38, 38, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .brand {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: #dc2626;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .partner {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #64748b;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: 38px;
+    line-height: 1.15;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+  }
+  h1 .accent { color: #dc2626; }
+  .subtitle {
+    font-size: 16px;
+    color: #94a3b8;
+    margin-bottom: 28px;
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 920px;
+    position: relative;
+    z-index: 1;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .step {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .step-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #dc2626;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .step-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+  .step-desc {
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.5;
+  }
+  .step-desc strong { color: #f1f5f9; }
+  .mandate {
+    background: linear-gradient(90deg, rgba(220, 38, 38, 0.12) 0%, rgba(220, 38, 38, 0.04) 100%);
+    border-left: 3px solid #dc2626;
+    border-radius: 8px;
+    padding: 16px 20px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .mandate-icon {
+    font-size: 28px;
+    color: #dc2626;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .mandate-text {
+    font-size: 14px;
+    color: #e2e8f0;
+    line-height: 1.5;
+  }
+  .mandate-text strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+  .footer {
+    position: absolute;
+    bottom: 22px;
+    right: 64px;
+    font-size: 11px;
+    color: #475569;
+    letter-spacing: 2px;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div class="brand">TOYOSA  ·  IA ORGANIZACIONAL</div>
+    <div class="partner">Implementación: B | P Intelligence</div>
+  </div>
+
+  <h1>CLAUDE.md — El <span class="accent">Mandato de IA</span> de Toyosa</h1>
+  <div class="subtitle">Antes de cada conversación, Claude lee este archivo. Define quiénes somos, cómo operamos y qué reglas debe seguir — se convierte en parte de los lineamientos oficiales de la organización.</div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Por qué hacerlo</div>
+      <div class="step-desc">
+        <strong>Uso eficiente de tokens</strong> (menor costo), <strong>mayor velocidad</strong> de respuesta, <strong>calidad y consistencia</strong> en cada output, base para <strong>generar agentes especializados</strong>, y trazabilidad para auditoría.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">Contestar cuestionario</div>
+      <div class="step-desc">Claude entrevista al equipo: industria, unidades de negocio, tono, stack tecnológico, canales, idiomas, políticas de datos y secretos.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">Validar información</div>
+      <div class="step-desc">Revisar el borrador con stakeholders clave. Ajustar reglas críticas — verificación, manejo de clientes, finanzas — antes de aprobar.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-title">Repositorio centralizado</div>
+      <div class="step-desc">Commit en Git. Una sola fuente de verdad, versionada y auditada, accesible para todo el equipo y reproducible en cada estación.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-title">Despliegue global</div>
+      <div class="step-desc">Copia a ~/.claude/CLAUDE.md en cada equipo. Toda sesión nueva — de cualquier colaborador — aplica las reglas automáticamente.</div>
+    </div>
+  </div>
+
+  <div class="mandate">
+    <div class="mandate-icon">!</div>
+    <div class="mandate-text">
+      <strong>Esto es lo que Claude lee ANTES de comenzar cualquier tarea.</strong> Se convierte en el mandato operativo de Toyosa frente a la IA — sus principios, su voz y sus límites, aplicados de forma consistente en cada interacción de cada colaborador.
+    </div>
+  </div>
+
+  <div class="footer">TOYOSA  ·  B | P INTELLIGENCE</div>
+</div>
+</body>
+</html>

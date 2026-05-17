@@ -1,115 +1,199 @@
-# Global Rules for Claude (All Sessions, All Projects)
+# CLAUDE.md — HospitalityIQ Dashboard (Dream Inn + Royal South Beach)
 
-## 1. Who I Am + Goals
+## 1. Overview & Non-goals
 
-Sr. AI implementation consultant. Two brands: **B|P Intelligence** (AI consulting) and **The Poler Team** (real estate). Revenue roughly balanced across AI consulting, real estate (brokerage + investor side), and hotel ops engagements.
+Repo for the **HospitalityIQ Dashboard** — operational + analytical command center for two MR9 Holdings / Mitch Rodriguez properties:
 
-Client verticals to assume context for: hotels & hospitality (independent/boutique + chains), real estate (brokerages, agents, proptech, investors, funds, developers), automotive, import/trade, finance.
+- **Dream Inn Hotel** — 2710 N Ocean Drive, Hollywood Beach, FL. Live operational asset; Noel runs day-to-day for MR9.
+- **The Royal South Beach** — 763 E Pennsylvania Ave, Miami Beach. 42-key boutique conversion (Hohauser/Dixon, 1936-38). Phase 2 kickoff 2026-03-27. MR9 owns 15 of 42 units; acquiring 27 more.
 
-*Top priority: make money.* When ambiguous, bias toward what closes a deal / lands an anchor consulting client / pays bills fastest.
+**Two-repo architecture:**
+- `npolerorg/General` (this repo): compiled static output served by Netlify
+- `npolerorg/hospiq-source` (private): Next.js 14 + TS source — all real development happens there
 
-*12-month targets:* $250k–$500k income; land 3–5 anchor AI consulting clients.
+Live: https://hospitalityiq-dashboard.netlify.app/
+Royal conversion review (Kevin's analytics site): https://royal-south-beach-review.netlify.app/
 
-*Voice:* first person ("I" / "we"), em-dashes fine, never third-person on outbound. English by default; switch to Spanish when the counterparty/context is Spanish-speaking.
+**Non-goals:** no proforma rebuilds (Kevin owns), no deck generation for the conversion (Kevin owns), no Driftwood/SLH negotiation drafts (Kevin owns), no brokerage / Poler Team listings work from this repo, no investor outreach.
 
----
+## 2. Roles (the team)
 
-## 2. CRITICAL: Never Make Things Up (client-facing + financial)
+- **Noel Poler (me / project owner):** client relationship with Mitch and MR9, operational analysis on Dream Inn, operational + strategic analysis on Royal, dashboard product owner.
+- **Kevin Poler (brother):** Driftwood relationship + Royal conversion analytics (proforma, decks, IRR/MOIC). Source of truth for all Royal financial numbers. Lives at https://royal-south-beach-review.netlify.app/. Maintains his own `CLAUDE.md` for that work.
+- **Dylan Poler (brother):** HospitalityIQ owner and developer. Owns the `hospiq-source` codebase. All UI/logic changes go through him.
 
-For anything client-facing, financial, or load-bearing on a decision: if you don't know, CHECK. Never fabricate, assume, or invent.
+## 3. Players + Artifacts (downstream — Kevin's primary contacts, I sit in)
 
-- Before recommending, sending a message, claiming a fact, promising scope, quoting price, or recapping prior commitments: **verify against the source.** No relying on memory.
-- If a real search fails: say "I searched and could not find a confirmed answer." Never fill the gap with inference.
-- Especially load-bearing for: Claude/Anthropic + third-party API pricing & behavior, vendor capability claims, anything I'll repeat to a client.
-- Internal/dev exploration: inference is allowed, but label it as inference.
+**Client — MR9 Holdings / Brickell Travel:**
+- Mitch Rodriguez (`mi@brickelltravel.com`) — primary client
+- Maikel "Mike" Rodriguez (`mike@brickelltravel.com`)
+- Marcel Rotker (`marcel@brickelltravel.com`, `mrotker@gmail.com`)
+- Ariel Rodriguez (`mgmt@mr9holdings.com`)
 
----
+**Operator (Royal, proposed) — Driftwood Hospitality:**
+- Andrew Stevens (`astevens@dhmhotels.com`) — intro contact
+- Daniel "Dan" Santalla (`dsantalla@dhmhotels.com`) — analytics/underwriting lead
+- **NEVER use `apetersen@driftwoodhosp.com`** — wrong address (per Kevin)
 
-## 3. Default Capability Assumption
+**Brand (Royal, proposed) — Small Luxury Hotels of the World:** Kenan. SLH has Hilton distribution tie-up.
 
-*You are fast and capable. Default = you CAN do it.* Time in minutes, not hours. Never say "I can't" without first scanning MCP servers, skills, and subagents listed in session-start reminders. If a tool errors, debug or report — don't silently downgrade or claim the capability doesn't exist.
+**Condo association (Royal):** Judith Berson-Levinson (`jsberson@me.com`) — board member, author of *South Beach at War*. Handle with respect. Noel had a good call with her 2026-04-06; do not jeopardize.
 
----
+**Brothers (Royal seller side):** Dennys + brothers own 18 units, paid avg $117K/unit, willing to sell ~$130K/door.
 
-## 4. Task Behavior by Complexity
+## 4. Tech Stack (this repo)
 
-- *Simple, reversible:* just execute.
-- *Moderate / complex:* plan → ask clarifying questions → execute on approval.
-- *Touches money / clients / production / live systems:* always plan first.
+- **Frontend:** React 18 via CDN (no build step). Each page is a self-contained `index.html` with JSX compiled in-browser by Babel.
+- **Styling:** custom CSS + Tailwind-style utility classes inline.
+- **Backend:** Netlify Functions (`/netlify/functions/`)
+  - `chat.js` — AI chat backend (calls Claude API)
+  - `slider-state.mjs` — dashboard slider persistence
+- **State:** Netlify Blobs (key-value)
+- **DB (via source repo):** Supabase (Postgres) — reservations, P&L records, email ingest log
+- **AI:** Claude Sonnet (`claude-sonnet-4-20250514`) via Anthropic API
+- **PMS:** migrating Hostaway → Guesty (Dream Inn)
+- **Hosting:** Netlify project `hospitalityiq-dashboard` (Noel's account); auto-deploy on push to `main`
 
-Default to planning on anything non-trivial. Use the `Plan` subagent for non-trivial code/architecture decisions. Use `AskUserQuestion` for discrete-option choices.
+To edit UI/logic: clone `npolerorg/hospiq-source`, change TSX, rebuild → outputs land here. **Do not edit HTML in this repo directly.**
 
----
+## 5. Repo Layout
 
-## 5. Tone
+```
+/
+├── index.html              ← Command Center (main)
+├── login/                  ← Auth
+├── dashboard/              ← Financial overview
+├── noi/                    ← NOI analysis (Dream Inn)
+├── ai-brief/               ← AI-generated briefings
+├── reservations/           ← Reservations tracker
+├── competitors/            ← Competitor analysis
+├── properties/             ← Property details
+├── royal-hotel/            ← ROYAL SECTION
+│   ├── index.html
+│   ├── data-problem/       ← Reconciliation tool
+│   ├── performance/        ← Performance metrics
+│   ├── strategic/          ← Strategic planning
+│   └── proposal/           ← Proposal docs
+├── netlify/functions/      ← Serverless backend
+├── netlify.toml
+├── package.json            ← Only Netlify function deps
+└── floor-plan.png
+```
 
-Terse 1–3 sentences for status and chatter. **For anything I'll repeat to a client (research findings, vendor comparisons, technical explanations, recommendations): include detailed reasoning and rationale** — I need to understand it well enough to explain it. Closing summary required (1–2 sentences: what changed, what's next). Push back hard when I'm wrong — no flattery, no hedging, no "great question."
+## 6. Locked Numbers — Royal South Beach (May 11, 2026 proforma)
 
----
+Source of truth: `MR9_Pennsylvania_Ave_Conversion_with_Commercial_20260511.xlsx` (Kevin). If a stakeholder cites different numbers, sync with Kevin before correcting.
 
-## 6. Reasoning Strategy
+**Property:** 42 keys, 15,330 available room-nights/yr, 4 ground-floor commercial NNN units.
 
-For moderate/complex tasks: decompose explicitly — state assumptions → list options → weigh trade-offs → conclude. When >1 valid approach, present 2–3 options with pros/cons + a Recommended. Run a sanity check ("what could be wrong with this?") before claiming done on stakes work. For client deliverables, show the working — I need to be able to defend the recommendation.
+**6 scenarios (Conservative/Base/Upside × 65% & 70% occ):**
 
----
+| Metric | Conservative 65% | **Base 70%** | Upside 70% |
+|---|---|---|---|
+| ADR | $200 | **$250** | $320 |
+| Occupancy | 65% | **70%** | 70% |
+| RevPAR | $130 | **$175** | $224 |
+| Hotel Revenue Yr 1 | $2,271,906 | **$2,983,218** | $3,734,388 |
+| Hotel NOI (pre-FF&E) | $315,707 | **$660,557** | $1,178,985 |
+| NOI Margin | 9.9% | **22.1%** | 31.6% |
+| Net Cash Flow | $224,831 | **$541,229** | $1,029,610 |
+| Exit Cap | 6.0% | **5.0%** | 4.0% |
+| Stabilized Value | $3.75M | **$10.82M** | $25.74M |
+| Year 5 IRR | -10.3% | **9.3%** | 14.5% |
+| Year 5 MOIC | 0.60× | **1.51×** | 1.84× |
 
-## 7. Verify Before Done
+**Capital stack (Base):** $4.0M acquisition (27 units) + **$4.0M PIP** + $1.25M soft costs (~10%) + $500K WC + $5,500 SLH = **$11,755,500** ($279,893/key).
 
-Never claim done without proof:
+**Operating assumptions (per-key, fixed across scenarios):** A&G $5,500 · Marketing $4,000 · R&M $3,200 · Utilities $2,400 · Insurance $6,500 · Property tax $170K total (~2% on $8.5M assessed) · Driftwood mgmt fee 3% of total rev · SLH $36,600/yr fixed + 8% rooms distribution · Rooms expense 28% of rooms rev.
 
-- *Code* → run tests (pytest / npm test / tsc) before reporting done; baseline must be green.
-- *UI / web work* → take a screenshot or run the dev server and verify in browser before claiming success.
-- *Outreach drafts* → cold-review the draft against the full prior thread before saying it's ready to send.
+**Commercial NOI:** $0 modeled. 4 units identified, lease terms not yet underwritten. **Flag if anyone cites commercial as income.**
 
-For moderate+ tasks: build → cold review → fix → re-review until it holds up.
+**Changes vs. Kevin's April 2023 lock — track these:**
 
----
+| Item | Apr 2023 lock | **May 2026 update** | Impact |
+|---|---|---|---|
+| PIP cost | $4M fixed | $2M / **$4M** / $6M | now scenario-dependent |
+| Exit cap | 6.0% uniform | 6.0% / **5.0%** / 4.0% | varies by scenario |
+| Year 5 IRR Base | 15% | **9.3%** | softened ~570 bps |
+| Year 5 MOIC Base | 1.87× | **1.51×** | softened |
+| ADR Base | $250 | **$250** | unchanged ✓ |
+| Occupancy Base | 70% | **70%** | unchanged ✓ |
 
-## 8. Token & Context Conservation
+**Floor for deal to work (per Kevin):** ADR ≥ $250, stabilized occ ≥ 70%, PIP ≤ $4M.
 
-- Spawn a subagent for any large search/research — keeps main context lean.
-- Lazy-load reference docs — read only when needed.
-- Targeted file reads — offset / limit / grep, not whole files unless required.
-- When main context >60% full, prefer spawning a subagent for the next non-trivial task over continuing inline.
+## 7. Locked Numbers — Dream Inn (operational)
 
----
+- **Property manager:** Park Properties — 15% commission on unclear base; **performance under review**
+- **2025 NOI:** $24,186 actual vs $58,682 budget (**-58.8%**)
+- **HOA costs 2025:** $176,034 actual vs $150,205 budget (+17.2%)
+- **Channel/OTA fees 2025:** $16,121 actual vs $7,578 budget (+112.7%)
+- **Repairs 2025:** $26,922 actual vs $1,200 budget (+2,144%)
+- **Property taxes 2025:** ~$10K unpaid; full year ~$35K uncollected
+- **Long-term rental rev 2025:** $52,948 (unbudgeted, volatile)
+- **Mandatory 60-yr building recertification** — building-wide $1M+; **MR9 share $200–250K**, funding source unclear
+- **Three strategic options on table:** Hold & Pay · Upgrade & Reposition · Sell
+- **Portfolio appreciation since acquisition:** bulk sale +39.4% · individual sale +53.4%
 
-## 9. Before Drafting Any Message On My Behalf
+**Data integrity issue:** 3 revenue sources produce 3 different numbers — reconciliation incomplete. Flag this any time gross revenue is summarized.
 
-Channels: Fastmail email, LinkedIn DMs/InMail, WhatsApp / SMS / iMessage, Slack/Teams in client workspaces. Drafts and sends alike: **read the ENTIRE prior thread first.** Check what scope, price, or promises I already made. A draft built on inference is worse than no draft. If thread context is missing, ask before drafting.
+## 8. Architecture & Patterns
 
----
+- **No build step in this repo.** Edit JSX inside `<script type="text/babel">` in each `index.html`. Babel compiles in browser.
+- **All real dev work** happens in `npolerorg/hospiq-source` (Next.js 14, TSX, Tailwind, Supabase). Outputs land here as static HTML.
+- **API calls** from frontend → Netlify Functions → external services (Anthropic, Supabase). **Never put API keys in client HTML.**
+- **Two-property model:** every dashboard must work for both Dream Inn (operational, live data) and Royal (analytical, scenario-driven). Don't conflate the two.
+- **Royal numbers** trace to Kevin's proforma. When in doubt, link out to https://royal-south-beach-review.netlify.app/ rather than reimplementing.
 
-## 10. Self-Improvement
+## 9. Commands
 
-Same correction twice = a rule is missing. Propose adding to global CLAUDE.md (behavior), project CLAUDE.md (project-specific), or memory (stable fact). Propose text + location. Don't write without my OK.
+```bash
+# Dev (source repo, not this one)
+cd ~/path/to/hospiq-source
+npm run dev
 
----
+# This repo — Netlify dev (functions only)
+netlify dev
 
-## 11. Repo Discipline
+# Deploy: auto on push to main
+git push origin main
+```
 
-Before creating or editing any file in a project: confirm with `git remote -v` and `pwd`. NEVER assume from the directory name — I have multiple repos with overlapping names (B|P Intelligence work, Poler Team sites, client mockups, hotel dashboards). When ambiguous, ask which repo before touching anything.
+## 10. Capabilities (project-specific)
 
----
+- **MCPs:** GitHub (scoped to `npolerorg/general`), Netlify (deploy/reader/updater), poler-crm (consulting CRM), Google Drive, Gmail.
+- **APIs:** Anthropic (Claude Sonnet 4), Supabase (Postgres + auth), Netlify Blobs, Netlify Functions.
+- **Skills:** `simplify` for code review post-change, `init` if scaffolding new sections, `pre-diagnostico-empresa` for board-level framing.
 
-## 12. Tech Stack Defaults
+## 11. Hard Rules
 
-Primary stacks: Python (Anthropic SDK, MCP servers, automations), TypeScript / Node / Next.js, no-code/low-code (n8n, Make, Zapier, Airtable). When proposing implementations, default to these unless the client environment requires otherwise.
+- **Never invent numbers — Royal.** Every ADR, occ, cap, IRR, MOIC, PIP traces to the May 11 2026 Excel or an explicit message from Kevin. No "reasonable defaults." Cite source: workbook tab + cell.
+- **Never invent numbers — Dream Inn.** Trace to bank statements, PMS exports (Hostaway → Guesty), HOA statements, or the `/noi/` dashboard. Always flag the 3-system revenue reconciliation problem when summarizing.
+- **Defer to Kevin on Royal financial framing.** If Mitch / Dan / Andrew / Kenan / Judith asks me a number-driven question, reply "let me sync with Kevin" — not an off-the-cuff figure.
+- **Defer to Dylan on `hospiq-source` code changes.** Don't push direct edits to this compiled repo. Work goes through the source repo.
+- **Never expand scope with clients.** Before proposing anything to Mitch or any Royal counterparty, re-read the full thread. See `~/.claude/CLAUDE.md` §9.
+- **Never confuse with Poler Team brokerage.** This is property management + consulting for Mitch — no listings, no homesinsoflorida campaigns from this repo.
+- **Handle Judith with respect.** Published author + condo board stakeholder. Do not jeopardize the relationship Noel built 2026-04-06.
+- **Driftwood email:** use `astevens@dhmhotels.com` and `dsantalla@dhmhotels.com`. NEVER `apetersen@driftwoodhosp.com`.
+- **Language:** **English** for all client-facing artifacts, even when threads are in Spanish (many are bilingual). Direction confirmed per Kevin 2026-04-23.
+- **No em dashes, no emojis** in any drafted client message. Lowercase, busy-founder voice for SMS/WhatsApp; professional-but-direct for emails.
+- **Old proforma deprecated.** Anything pre-May 11 2026 (`Royal_Proforma.xlsx` April 23 version, 15% IRR / 1.87× MOIC locks) is stale. Do not regress.
 
----
+## 12. References (load on demand)
 
-## 13. Secrets & API Keys
+- **Kevin's Royal CLAUDE.md:** `/Users/kevinpoler/Documents/DealAnalyzer/CLAUDE.md` — engagement-level master for conversion side
+- **Royal proforma (current):** `MR9_Pennsylvania_Ave_Conversion_with_Commercial_20260511.xlsx`
+- **Royal review site:** https://royal-south-beach-review.netlify.app/
+- **HospitalityIQ live:** https://hospitalityiq-dashboard.netlify.app/
+- **Source repo:** https://github.com/npolerorg/hospiq-source (private)
+- **Live email threads:** "RE: Miami Beach Project" (Dan/Andrew) · "Royal South Beach — Update: Judith, Driftwood, SLH y próximos pasos [CONFIDENCIAL]" · "Phase 2 Kickoff — Dream Inn & The Royal South Beach"
+- **Recordings (Otter + Zoom):** "Driftwood - South Beach Polly Lux" (Apr 2) · "Small Luxury Hotels - South Beach Polly Lux" (Apr 7) · "Driftwood - The Royal South Beach" (Apr 23)
 
-**Recommended pattern (use this unless project requires otherwise):**
+## 13. Canary
 
-- Each project owns its own `.env` at the project root, with a checked-in `.env.example` template (key names only, no values).
-- `.env` must be in `.gitignore` before any commit.
-- Never export API keys in shell profiles.
-- For secrets shared across projects (e.g., my personal Anthropic key, vendor keys reused across clients): store in **1Password**, pull into project `.env` when needed.
-- Client engagements: use the client's secret management (their vault, AWS/GCP Secret Manager, Doppler, etc.) — never copy client keys into my personal store.
+First Royal-related response in any new session must include the phrase **"Royal floor: $250 / 70% / $4M"** in the opening summary. If absent, this file isn't loading.
 
----
+## 14. Learnings
 
-## 14. File Defaults
+Tags `[FAIL]` / `[WIN]` / `[FAST]`. Append on every mistake, success, or speedup.
 
-Save files to `~/Documents` unless specified. Project files live in their repos. Reference docs and rules in `~/.claude/rules/*.md` — lazy-load when needed.
+- 2026-05-11 [UPDATE]: Royal proforma updated to scenario-dependent PIP ($2M/$4M/$6M) and variable exit caps (6/5/4%). Year 5 IRR Base softened from 15% to 9.3%. Any deck, summary, or client message using old numbers needs to be updated.

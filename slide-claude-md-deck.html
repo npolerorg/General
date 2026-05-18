@@ -360,6 +360,172 @@
   }
   .mcp-use strong { color: #f87171; font-weight: 600; }
 
+  /* SLIDE 4 — Stack quadrants */
+  .slide-4 { padding: 44px 56px 36px; }
+  .slide-4 .header { margin-bottom: 10px; }
+  .slide-4 h1 { font-size: 30px; margin-bottom: 6px; }
+  .slide-4 .subtitle { font-size: 13.5px; margin-bottom: 18px; max-width: 1080px; }
+  .slide-4 .footer { bottom: 14px; right: 56px; font-size: 10px; }
+  .quad-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 14px;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .quad {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    padding: 16px 20px 18px;
+    display: flex;
+    flex-direction: column;
+  }
+  .quad-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .quad-cat {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #dc2626;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .quad-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-left: auto;
+  }
+  .quad-list { list-style: none; margin-top: 10px; }
+  .quad-list li {
+    font-size: 12.5px;
+    color: #e2e8f0;
+    line-height: 1.55;
+    padding: 3px 0 3px 14px;
+    position: relative;
+  }
+  .quad-list li::before {
+    content: "›";
+    color: #dc2626;
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+    top: 3px;
+  }
+  .quad-list li strong { color: #ffffff; font-weight: 700; }
+  .quad-list li .meta { color: #94a3b8; font-size: 11.5px; }
+  .quad-list li code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    color: #fca5a5;
+  }
+
+  /* SLIDE 5 — Appendix: claude-code-setup */
+  .slide-5 { padding: 44px 56px 36px; }
+  .slide-5 .header { margin-bottom: 6px; }
+  .slide-5 h1 { font-size: 30px; margin-bottom: 6px; }
+  .slide-5 h1 code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 26px;
+    color: #dc2626;
+    font-weight: 700;
+  }
+  .slide-5 .subtitle { font-size: 13.5px; margin-bottom: 18px; max-width: 1080px; }
+  .slide-5 .footer { bottom: 14px; right: 56px; font-size: 10px; }
+  .apx-badge {
+    display: inline-block;
+    background: rgba(220, 38, 38, 0.18);
+    border: 1px solid rgba(220, 38, 38, 0.40);
+    color: #fca5a5;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .cols .col {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: block;
+  }
+  .cols .col.do { border-left: 3px solid #16a34a; }
+  .cols .col.dont { border-left: 3px solid #dc2626; }
+  .cols .col-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; padding-bottom: 0; border-bottom: none; }
+  .col-pill {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .cols .col.do .col-pill { background: rgba(22, 163, 74, 0.18); color: #4ade80; }
+  .cols .col.dont .col-pill { background: rgba(220, 38, 38, 0.18); color: #f87171; }
+  .cols .col-title { font-size: 15px; font-weight: 700; color: #ffffff; }
+  .cols .col-list { list-style: none; flex: none; }
+  .cols .col-list li {
+    font-size: 12.5px;
+    color: #e2e8f0;
+    line-height: 1.5;
+    padding: 4px 0 4px 14px;
+    position: relative;
+  }
+  .cols .col.do .col-list li::before {
+    content: "✓";
+    color: #4ade80;
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+    top: 4px;
+  }
+  .cols .col.dont .col-list li::before {
+    content: "✗";
+    color: #f87171;
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+    top: 4px;
+  }
+  .cols .col-list li strong { color: #ffffff; font-weight: 700; }
+  .install {
+    background: rgba(0,0,0,0.30);
+    border: 1px solid rgba(220, 38, 38, 0.30);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    color: #fca5a5;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .install .prompt { color: #64748b; }
+  .install .cmd { color: #f1f5f9; }
+  .install .note { color: #64748b; font-family: -apple-system, sans-serif; font-size: 11px; margin-left: auto; }
+
   /* Deck navigation */
   .nav {
     position: fixed;
@@ -461,7 +627,7 @@
       </div>
     </div>
 
-    <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  1 / 3</div>
+    <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  1 / 4</div>
   </div>
 
   <!-- ====== SLIDE 2 ====== -->
@@ -521,7 +687,7 @@
       </div>
     </div>
 
-    <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  2 / 3</div>
+    <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  2 / 4</div>
   </div>
 
   <!-- ====== SLIDE 3 ====== -->
@@ -599,14 +765,152 @@
       </div>
     </div>
 
-    <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  3 / 3</div>
+    <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  3 / 4</div>
+  </div>
+
+  <!-- ====== SLIDE 4 ====== -->
+  <div class="slide slide-4" data-slide="4">
+    <div class="header">
+      <div class="brand">TOYOSA  ·  IA ORGANIZACIONAL</div>
+      <div class="partner">Implementación: B | P Intelligence</div>
+    </div>
+
+    <h1>Las piezas de <span class="accent">Claude Code</span> que combinan con Tableau</h1>
+    <div class="subtitle">Cuatro categorías de componentes que se <strong>montan sobre Tableau</strong> para entregar inteligencia ejecutiva sin reemplazar nada de lo que Toyosa ya tiene.</div>
+
+    <div class="quad-grid">
+
+      <div class="quad">
+        <div class="quad-head">
+          <div class="quad-cat">Integración</div>
+          <div class="quad-title">MCPs</div>
+        </div>
+        <ul class="quad-list">
+          <li><strong>@tableau/mcp-server</strong> <span class="meta">— oficial</span></li>
+          <li><strong>whatsapp</strong> <span class="meta">— alertas + chat bidireccional</span></li>
+          <li><strong>scheduled-tasks</strong> <span class="meta">— cron jobs</span></li>
+          <li><strong>gmail</strong> <span class="meta">— drafts y respuestas</span></li>
+          <li><strong>google-drive</strong> <span class="meta">— export decks</span></li>
+          <li><strong>poler-crm</strong> <span class="meta">— log actividad consulting</span></li>
+        </ul>
+      </div>
+
+      <div class="quad">
+        <div class="quad-head">
+          <div class="quad-cat">Experiencia</div>
+          <div class="quad-title">Skills</div>
+        </div>
+        <ul class="quad-list">
+          <li><code>data:analyze</code> <span class="meta">· </span><code>data:sql-queries</code></li>
+          <li><code>data:build-dashboard</code></li>
+          <li><code>data:validate-data</code></li>
+          <li><code>finance:variance-analysis</code></li>
+          <li><code>product-management:metrics-review</code></li>
+          <li><code>pre-diagnostico-empresa</code> <span class="meta">— B | P</span></li>
+        </ul>
+      </div>
+
+      <div class="quad">
+        <div class="quad-head">
+          <div class="quad-cat">Delegación</div>
+          <div class="quad-title">Subagentes</div>
+        </div>
+        <ul class="quad-list">
+          <li><strong>researcher</strong> <span class="meta">→ preguntas de negocio</span></li>
+          <li><strong>qa</strong> <span class="meta">→ review pre-envío a cliente</span></li>
+          <li><strong>code-reviewer</strong> <span class="meta">→ cambios en pipelines</span></li>
+          <li><strong>Plan</strong> <span class="meta">→ diseño de arquitectura</span></li>
+          <li><strong>Explore</strong> <span class="meta">→ mapear workbooks existentes</span></li>
+        </ul>
+      </div>
+
+      <div class="quad">
+        <div class="quad-head">
+          <div class="quad-cat">Contexto</div>
+          <div class="quad-title">CLAUDE.md + memoria</div>
+        </div>
+        <ul class="quad-list">
+          <li><code>toyosa/CLAUDE.md</code> <span class="meta">— contexto del engagement</span></li>
+          <li><code>verified-numbers.md</code> <span class="meta">— cifras válidas (Directorio, EERR)</span></li>
+          <li><code>stakeholders.md</code> <span class="meta">— quién comunica con quién</span></li>
+          <li><code>rules/poler-team-agent-api.md</code> <span class="meta">— CRM</span></li>
+          <li><code>memory/*</code> <span class="meta">— rotación, canales, decisiones</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  4 / 4</div>
+  </div>
+
+  <!-- ====== SLIDE 5 (APPENDIX) ====== -->
+  <div class="slide slide-5" data-slide="5">
+    <div class="header">
+      <div class="brand">TOYOSA  ·  IA ORGANIZACIONAL</div>
+      <div class="partner">Implementación: B | P Intelligence</div>
+    </div>
+
+    <div class="apx-badge">APÉNDICE</div>
+
+    <h1>Herramienta de discovery: <code>claude-code-setup</code></h1>
+    <div class="subtitle">Plugin <strong>oficial de Anthropic</strong> que analiza un codebase y recomienda automatizaciones. Lo usaremos en la fase de implementación para auditar cada repo de Toyosa (Toyosa Holding, Intermex, Crown) y proponer la configuración óptima por BU.</div>
+
+    <div class="cols">
+
+      <div class="col do">
+        <div class="col-head">
+          <span class="col-pill">Qué hace</span>
+          <div class="col-title">Scanner read-only</div>
+        </div>
+        <ul class="col-list">
+          <li>Escanea estructura del proyecto y detecta patrones</li>
+          <li>Recomienda <strong>top 1-2</strong> en cada categoría:</li>
+          <li style="padding-left:28px"><strong>MCP Servers</strong> — integraciones externas</li>
+          <li style="padding-left:28px"><strong>Skills</strong> — capacidades empaquetadas</li>
+          <li style="padding-left:28px"><strong>Hooks</strong> — acciones automáticas (lint, format)</li>
+          <li style="padding-left:28px"><strong>Subagents</strong> — revisores especializados</li>
+          <li style="padding-left:28px"><strong>Slash Commands</strong> — workflows rápidos</li>
+          <li>Devuelve lista priorizada, lista para revisar</li>
+        </ul>
+      </div>
+
+      <div class="col dont">
+        <div class="col-head">
+          <span class="col-pill">Qué NO hace</span>
+          <div class="col-title">No es magia ni reemplazo</div>
+        </div>
+        <ul class="col-list">
+          <li><strong>No modifica archivos</strong> — solo recomienda</li>
+          <li><strong>No instala</strong> MCPs ni configura hooks por sí solo</li>
+          <li><strong>No reemplaza el CLAUDE.md</strong> — es input, no output</li>
+          <li><strong>No conoce el negocio</strong> — no sabe quién es Edwin, qué es Alchemy, ni las reglas duras</li>
+          <li><strong>No es un one-click setup</strong> — la decisión final y la implementación las hace nuestro equipo</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="flow">
+      <div class="flow-icon">▶</div>
+      <div class="flow-text">
+        <strong>Cuándo lo corremos:</strong> al pasar de Discovery a Implementación, una corrida por repo/BU. La salida alimenta el <code>CLAUDE.md</code> de cada proyecto — combinamos sus recomendaciones técnicas con el contexto de negocio que ya tenemos validado con Edwin y Juan Carlos.
+      </div>
+    </div>
+
+    <div class="install" style="margin-top: 10px;">
+      <span class="prompt">$</span>
+      <span class="cmd">/plugin install claude-code-setup@claude-plugins-official</span>
+      <span class="note">marketplace oficial de Anthropic</span>
+    </div>
+
+    <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  APÉNDICE</div>
   </div>
 
 </div>
 
 <div class="nav">
   <button id="prev" aria-label="Anterior">‹</button>
-  <div class="counter"><span id="cur">1</span> / <span id="total">2</span></div>
+  <div class="counter"><span id="cur">1</span> / <span id="total">5</span></div>
   <button id="next" aria-label="Siguiente">›</button>
 </div>
 

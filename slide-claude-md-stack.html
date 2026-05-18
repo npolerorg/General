@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Las piezas de Claude Code que combinan con Tableau</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #0a0a0a;
+    color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 24px;
+    padding: 44px 56px 36px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  .slide::before { content: ""; position: absolute; top: -120px; right: -120px; width: 420px; height: 420px; background: radial-gradient(circle, rgba(220, 38, 38, 0.18) 0%, transparent 70%); border-radius: 50%; }
+  .slide::after { content: ""; position: absolute; bottom: -100px; left: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(220, 38, 38, 0.08) 0%, transparent 70%); border-radius: 50%; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; position: relative; z-index: 1; }
+  .brand { font-size: 13px; letter-spacing: 3px; color: #dc2626; font-weight: 700; text-transform: uppercase; }
+  .partner { font-size: 11px; letter-spacing: 2px; color: #64748b; font-weight: 500; text-transform: uppercase; }
+  h1 { font-size: 30px; line-height: 1.15; font-weight: 700; margin-bottom: 6px; color: #ffffff; position: relative; z-index: 1; }
+  h1 .accent { color: #dc2626; }
+  .subtitle { font-size: 13.5px; color: #94a3b8; margin-bottom: 18px; font-weight: 400; line-height: 1.5; max-width: 1080px; position: relative; z-index: 1; }
+  .subtitle strong { color: #e2e8f0; font-weight: 700; }
+
+  .quad-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 14px;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .quad {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    padding: 16px 20px 18px;
+    display: flex;
+    flex-direction: column;
+  }
+  .quad-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .quad-cat {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #dc2626;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .quad-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-left: auto;
+  }
+  .quad-list { list-style: none; margin-top: 10px; }
+  .quad-list li {
+    font-size: 12.5px;
+    color: #e2e8f0;
+    line-height: 1.55;
+    padding: 3px 0 3px 14px;
+    position: relative;
+  }
+  .quad-list li::before {
+    content: "›";
+    color: #dc2626;
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+    top: 3px;
+  }
+  .quad-list li strong { color: #ffffff; font-weight: 700; }
+  .quad-list li .meta { color: #94a3b8; font-size: 11.5px; }
+  .quad-list li code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    color: #fca5a5;
+  }
+
+  .footer { position: absolute; bottom: 14px; right: 56px; font-size: 10px; color: #475569; letter-spacing: 2px; z-index: 1; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div class="brand">TOYOSA  ·  IA ORGANIZACIONAL</div>
+    <div class="partner">Implementación: B | P Intelligence</div>
+  </div>
+
+  <h1>Las piezas de <span class="accent">Claude Code</span> que combinan con Tableau</h1>
+  <div class="subtitle">Cuatro categorías de componentes que se <strong>montan sobre Tableau</strong> para entregar inteligencia ejecutiva sin reemplazar nada de lo que Toyosa ya tiene.</div>
+
+  <div class="quad-grid">
+
+    <div class="quad">
+      <div class="quad-head">
+        <div class="quad-cat">Integración</div>
+        <div class="quad-title">MCPs</div>
+      </div>
+      <ul class="quad-list">
+        <li><strong>@tableau/mcp-server</strong> <span class="meta">— oficial</span></li>
+        <li><strong>whatsapp</strong> <span class="meta">— alertas + chat bidireccional</span></li>
+        <li><strong>scheduled-tasks</strong> <span class="meta">— cron jobs</span></li>
+        <li><strong>gmail</strong> <span class="meta">— drafts y respuestas</span></li>
+        <li><strong>google-drive</strong> <span class="meta">— export decks</span></li>
+        <li><strong>poler-crm</strong> <span class="meta">— log actividad consulting</span></li>
+      </ul>
+    </div>
+
+    <div class="quad">
+      <div class="quad-head">
+        <div class="quad-cat">Experiencia</div>
+        <div class="quad-title">Skills</div>
+      </div>
+      <ul class="quad-list">
+        <li><code>data:analyze</code> <span class="meta">· </span><code>data:sql-queries</code></li>
+        <li><code>data:build-dashboard</code></li>
+        <li><code>data:validate-data</code></li>
+        <li><code>finance:variance-analysis</code></li>
+        <li><code>product-management:metrics-review</code></li>
+        <li><code>pre-diagnostico-empresa</code> <span class="meta">— B | P</span></li>
+      </ul>
+    </div>
+
+    <div class="quad">
+      <div class="quad-head">
+        <div class="quad-cat">Delegación</div>
+        <div class="quad-title">Subagentes</div>
+      </div>
+      <ul class="quad-list">
+        <li><strong>researcher</strong> <span class="meta">→ preguntas de negocio</span></li>
+        <li><strong>qa</strong> <span class="meta">→ review pre-envío a cliente</span></li>
+        <li><strong>code-reviewer</strong> <span class="meta">→ cambios en pipelines</span></li>
+        <li><strong>Plan</strong> <span class="meta">→ diseño de arquitectura</span></li>
+        <li><strong>Explore</strong> <span class="meta">→ mapear workbooks existentes</span></li>
+      </ul>
+    </div>
+
+    <div class="quad">
+      <div class="quad-head">
+        <div class="quad-cat">Contexto</div>
+        <div class="quad-title">CLAUDE.md + memoria</div>
+      </div>
+      <ul class="quad-list">
+        <li><code>toyosa/CLAUDE.md</code> <span class="meta">— contexto del engagement</span></li>
+        <li><code>verified-numbers.md</code> <span class="meta">— cifras válidas (Directorio, EERR)</span></li>
+        <li><code>stakeholders.md</code> <span class="meta">— quién comunica con quién</span></li>
+        <li><code>rules/poler-team-agent-api.md</code> <span class="meta">— CRM</span></li>
+        <li><code>memory/*</code> <span class="meta">— rotación, canales, decisiones</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  4 / 4</div>
+</div>
+</body>
+</html>

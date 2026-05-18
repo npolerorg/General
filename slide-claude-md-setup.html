@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Apéndice · claude-code-setup</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #0a0a0a;
+    color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 24px;
+    padding: 44px 56px 36px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  .slide::before { content: ""; position: absolute; top: -120px; right: -120px; width: 420px; height: 420px; background: radial-gradient(circle, rgba(220, 38, 38, 0.18) 0%, transparent 70%); border-radius: 50%; }
+  .slide::after { content: ""; position: absolute; bottom: -100px; left: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(220, 38, 38, 0.08) 0%, transparent 70%); border-radius: 50%; }
+
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; position: relative; z-index: 1; }
+  .brand { font-size: 13px; letter-spacing: 3px; color: #dc2626; font-weight: 700; text-transform: uppercase; }
+  .partner { font-size: 11px; letter-spacing: 2px; color: #64748b; font-weight: 500; text-transform: uppercase; }
+
+  .apx-badge {
+    display: inline-block;
+    background: rgba(220, 38, 38, 0.18);
+    border: 1px solid rgba(220, 38, 38, 0.40);
+    color: #fca5a5;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 { font-size: 30px; line-height: 1.15; font-weight: 700; margin-bottom: 6px; color: #ffffff; position: relative; z-index: 1; }
+  h1 .accent { color: #dc2626; }
+  h1 code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 26px;
+    color: #dc2626;
+    font-weight: 700;
+  }
+  .subtitle { font-size: 13.5px; color: #94a3b8; margin-bottom: 18px; font-weight: 400; line-height: 1.5; max-width: 1080px; position: relative; z-index: 1; }
+  .subtitle strong { color: #e2e8f0; font-weight: 700; }
+
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .col {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+  .col.do { border-left: 3px solid #16a34a; }
+  .col.dont { border-left: 3px solid #dc2626; }
+  .col-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+  .col-pill {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .col.do .col-pill { background: rgba(22, 163, 74, 0.18); color: #4ade80; }
+  .col.dont .col-pill { background: rgba(220, 38, 38, 0.18); color: #f87171; }
+  .col-title { font-size: 15px; font-weight: 700; color: #ffffff; }
+  .col-list { list-style: none; }
+  .col-list li {
+    font-size: 12.5px;
+    color: #e2e8f0;
+    line-height: 1.5;
+    padding: 4px 0 4px 14px;
+    position: relative;
+  }
+  .col.do .col-list li::before {
+    content: "✓";
+    color: #4ade80;
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+    top: 4px;
+  }
+  .col.dont .col-list li::before {
+    content: "✗";
+    color: #f87171;
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+    top: 4px;
+  }
+  .col-list li strong { color: #ffffff; font-weight: 700; }
+
+  .timing {
+    background: linear-gradient(90deg, rgba(220, 38, 38, 0.12) 0%, rgba(220, 38, 38, 0.04) 100%);
+    border-left: 3px solid #dc2626;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .timing-icon { font-size: 20px; color: #dc2626; font-weight: 700; line-height: 1; }
+  .timing-text { font-size: 12.5px; color: #e2e8f0; line-height: 1.5; }
+  .timing-text strong { color: #ffffff; font-weight: 700; }
+  .timing-text code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    color: #fca5a5;
+    background: rgba(220, 38, 38, 0.10);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  .install {
+    background: rgba(0,0,0,0.30);
+    border: 1px solid rgba(220, 38, 38, 0.30);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    color: #fca5a5;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .install .prompt { color: #64748b; }
+  .install .cmd { color: #f1f5f9; }
+  .install .note { color: #64748b; font-family: -apple-system, sans-serif; font-size: 11px; margin-left: auto; }
+
+  .footer { position: absolute; bottom: 14px; right: 56px; font-size: 10px; color: #475569; letter-spacing: 2px; z-index: 1; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div class="brand">TOYOSA  ·  IA ORGANIZACIONAL</div>
+    <div class="partner">Implementación: B | P Intelligence</div>
+  </div>
+
+  <div class="apx-badge">APÉNDICE</div>
+
+  <h1>Herramienta de discovery: <code>claude-code-setup</code></h1>
+  <div class="subtitle">Plugin <strong>oficial de Anthropic</strong> que analiza un codebase y recomienda automatizaciones. Lo usaremos en la fase de implementación para auditar cada repo de Toyosa (Toyosa Holding, Intermex, Crown) y proponer la configuración óptima por BU.</div>
+
+  <div class="cols">
+
+    <div class="col do">
+      <div class="col-head">
+        <span class="col-pill">Qué hace</span>
+        <div class="col-title">Scanner read-only</div>
+      </div>
+      <ul class="col-list">
+        <li>Escanea estructura del proyecto y detecta patrones</li>
+        <li>Recomienda <strong>top 1-2</strong> en cada categoría:</li>
+        <li style="padding-left:28px"><strong>MCP Servers</strong> — integraciones externas</li>
+        <li style="padding-left:28px"><strong>Skills</strong> — capacidades empaquetadas</li>
+        <li style="padding-left:28px"><strong>Hooks</strong> — acciones automáticas (lint, format)</li>
+        <li style="padding-left:28px"><strong>Subagents</strong> — revisores especializados</li>
+        <li style="padding-left:28px"><strong>Slash Commands</strong> — workflows rápidos</li>
+        <li>Devuelve lista priorizada, lista para revisar</li>
+      </ul>
+    </div>
+
+    <div class="col dont">
+      <div class="col-head">
+        <span class="col-pill">Qué NO hace</span>
+        <div class="col-title">No es magia ni reemplazo</div>
+      </div>
+      <ul class="col-list">
+        <li><strong>No modifica archivos</strong> — solo recomienda</li>
+        <li><strong>No instala</strong> MCPs ni configura hooks por sí solo</li>
+        <li><strong>No reemplaza el CLAUDE.md</strong> — es input, no output</li>
+        <li><strong>No conoce el negocio</strong> — no sabe quién es Edwin, qué es Alchemy, ni las reglas duras</li>
+        <li><strong>No es un one-click setup</strong> — la decisión final y la implementación las hace nuestro equipo</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="timing">
+    <div class="timing-icon">▶</div>
+    <div class="timing-text">
+      <strong>Cuándo lo corremos:</strong> al pasar de Discovery a Implementación, una corrida por repo/BU. La salida alimenta el <code>CLAUDE.md</code> de cada proyecto — combinamos sus recomendaciones técnicas con el contexto de negocio que ya tenemos validado con Edwin y Juan Carlos.
+    </div>
+  </div>
+
+  <div class="install">
+    <span class="prompt">$</span>
+    <span class="cmd">/plugin install claude-code-setup@claude-plugins-official</span>
+    <span class="note">marketplace oficial de Anthropic</span>
+  </div>
+
+  <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  APÉNDICE</div>
+</div>
+</body>
+</html>

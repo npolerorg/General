@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>CLAUDE.md — Toyosa · Mandato Organizacional de IA</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #0a0a0a;
+    color: #f5f5f5;
+    overflow: hidden;
+  }
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: absolute;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  /* slide 1 padding */
+  .slide-1 { padding: 56px 64px; }
+  /* slide 2 padding */
+  .slide-2 { padding: 44px 56px 36px; }
+
+  .slide::before {
+    content: "";
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(220, 38, 38, 0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .slide::after {
+    content: "";
+    position: absolute;
+    bottom: -100px; left: -100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(220, 38, 38, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .slide-1 .header { margin-bottom: 14px; }
+  .slide-2 .header { margin-bottom: 10px; }
+
+  .brand {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: #dc2626;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .partner {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #64748b;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    line-height: 1.15;
+    font-weight: 700;
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+  }
+  .slide-1 h1 { font-size: 38px; margin-bottom: 10px; }
+  .slide-2 h1 { font-size: 32px; margin-bottom: 6px; }
+  h1 .accent { color: #dc2626; }
+
+  .subtitle {
+    color: #94a3b8;
+    font-weight: 400;
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+  }
+  .slide-1 .subtitle { font-size: 16px; margin-bottom: 28px; max-width: 920px; }
+  .slide-2 .subtitle { font-size: 14px; margin-bottom: 20px; max-width: 1080px; }
+  .subtitle strong { color: #e2e8f0; font-weight: 700; }
+
+  /* SLIDE 1 — Steps */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .step {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .step-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #dc2626;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .step-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+  .step-desc {
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.5;
+  }
+  .step-desc strong { color: #f1f5f9; }
+
+  .mandate {
+    background: linear-gradient(90deg, rgba(220, 38, 38, 0.12) 0%, rgba(220, 38, 38, 0.04) 100%);
+    border-left: 3px solid #dc2626;
+    border-radius: 8px;
+    padding: 16px 20px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .mandate-icon {
+    font-size: 28px;
+    color: #dc2626;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .mandate-text {
+    font-size: 14px;
+    color: #e2e8f0;
+    line-height: 1.5;
+  }
+  .mandate-text strong { color: #ffffff; font-weight: 700; }
+
+  /* SLIDE 2 — Columns */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .col {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 14px;
+    padding: 20px 22px 18px;
+    display: flex;
+    flex-direction: column;
+  }
+  .col-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .col-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .col-title .pill {
+    display: inline-block;
+    background: #dc2626;
+    color: #ffffff;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 8px;
+    letter-spacing: 1px;
+    vertical-align: middle;
+    font-weight: 700;
+  }
+  .col-path {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    color: #f87171;
+    background: rgba(220, 38, 38, 0.08);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .col-purpose {
+    font-size: 12px;
+    color: #cbd5e1;
+    font-style: italic;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    line-height: 1.45;
+  }
+  .col-list { list-style: none; flex: 1; }
+  .col-list li {
+    font-size: 12.5px;
+    color: #e2e8f0;
+    line-height: 1.5;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+  .col-list li::before {
+    content: "→";
+    color: #dc2626;
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+    top: 4px;
+  }
+  .col-list li strong { color: #ffffff; font-weight: 600; }
+
+  .flow {
+    background: linear-gradient(90deg, rgba(220, 38, 38, 0.12) 0%, rgba(220, 38, 38, 0.04) 100%);
+    border-left: 3px solid #dc2626;
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-top: 14px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .flow-icon {
+    font-size: 20px;
+    color: #dc2626;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .flow-text {
+    font-size: 12.5px;
+    color: #e2e8f0;
+    line-height: 1.5;
+  }
+  .flow-text strong { color: #ffffff; font-weight: 700; }
+  .flow-text code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    color: #fca5a5;
+    background: rgba(220, 38, 38, 0.10);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 22px;
+    right: 64px;
+    font-size: 11px;
+    color: #475569;
+    letter-spacing: 2px;
+    z-index: 1;
+  }
+  .slide-2 .footer { bottom: 14px; right: 56px; font-size: 10px; }
+
+  /* Deck navigation */
+  .nav {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 999px;
+    padding: 6px 14px;
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+  .nav button {
+    background: transparent;
+    border: none;
+    color: #cbd5e1;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+  }
+  .nav button:hover { background: rgba(220, 38, 38, 0.18); color: #ffffff; }
+  .nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+  .nav .counter {
+    font-size: 12px;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    font-variant-numeric: tabular-nums;
+    min-width: 36px;
+    text-align: center;
+  }
+  @media print {
+    body { overflow: visible; }
+    .nav { display: none; }
+    .slide {
+      page-break-after: always;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      position: relative;
+      margin: 0 auto 40px;
+      transition: none;
+    }
+    .deck { display: block; padding: 0; height: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ====== SLIDE 1 ====== -->
+  <div class="slide slide-1 active" data-slide="1">
+    <div class="header">
+      <div class="brand">TOYOSA  ·  IA ORGANIZACIONAL</div>
+      <div class="partner">Implementación: B | P Intelligence</div>
+    </div>
+
+    <h1>CLAUDE.md — El <span class="accent">Mandato de IA</span> de Toyosa</h1>
+    <div class="subtitle">Antes de cada conversación, Claude lee este archivo. Define quiénes somos, cómo operamos y qué reglas debe seguir — se convierte en parte de los lineamientos oficiales de la organización.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Por qué hacerlo</div>
+        <div class="step-desc">
+          <strong>Uso eficiente de tokens</strong> (menor costo), <strong>mayor velocidad</strong> de respuesta, <strong>calidad y consistencia</strong> en cada output, base para <strong>generar agentes especializados</strong>, y trazabilidad para auditoría.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Contestar cuestionario</div>
+        <div class="step-desc">Claude entrevista al equipo: industria, unidades de negocio, tono, stack tecnológico, canales, idiomas, políticas de datos y secretos.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Validar información</div>
+        <div class="step-desc">Revisar el borrador con stakeholders clave. Ajustar reglas críticas — verificación, manejo de clientes, finanzas — antes de aprobar.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Repositorio centralizado</div>
+        <div class="step-desc">Commit en Git. Una sola fuente de verdad, versionada y auditada, accesible para todo el equipo y reproducible en cada estación.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-title">Despliegue global</div>
+        <div class="step-desc">Copia a ~/.claude/CLAUDE.md en cada equipo. Toda sesión nueva — de cualquier colaborador — aplica las reglas automáticamente.</div>
+      </div>
+    </div>
+
+    <div class="mandate">
+      <div class="mandate-icon">!</div>
+      <div class="mandate-text">
+        <strong>Esto es lo que Claude lee ANTES de comenzar cualquier tarea.</strong> Se convierte en el mandato operativo de Toyosa frente a la IA — sus principios, su voz y sus límites, aplicados de forma consistente en cada interacción de cada colaborador.
+      </div>
+    </div>
+
+    <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  1 / 2</div>
+  </div>
+
+  <!-- ====== SLIDE 2 ====== -->
+  <div class="slide slide-2" data-slide="2">
+    <div class="header">
+      <div class="brand">TOYOSA  ·  IA ORGANIZACIONAL</div>
+      <div class="partner">Implementación: B | P Intelligence</div>
+    </div>
+
+    <h1>Dos Niveles de Configuración: <span class="accent">Global + Local</span></h1>
+    <div class="subtitle">El <strong>Global</strong> define la identidad y reglas que aplican siempre. El <strong>Local</strong> define el contexto específico de cada proyecto, cliente o BU. Claude lee ambos en cada sesión y los aplica como un solo mandato.</div>
+
+    <div class="columns">
+      <div class="col">
+        <div class="col-header">
+          <div class="col-title"><span class="pill">NIVEL 1</span>GLOBAL</div>
+          <div class="col-path">~/.claude/CLAUDE.md</div>
+        </div>
+        <div class="col-purpose">Reglas transversales que aplican en cada sesión, en cada proyecto, sin excepción.</div>
+        <ul class="col-list">
+          <li><strong>Identidad y objetivos</strong> de la organización (Toyosa: holding, BUs, geografías)</li>
+          <li><strong>Voz y tono</strong> (idioma, formalidad, estilo de comunicación)</li>
+          <li><strong>Verificación crítica</strong> — nunca inventar cifras ni inferencias en temas financieros o de cliente</li>
+          <li><strong>Comportamiento por tarea</strong> — qué requiere plan previo, qué se ejecuta directo</li>
+          <li><strong>Estrategia de razonamiento</strong> — cuándo decomponer, cuándo presentar trade-offs</li>
+          <li><strong>Conservación de tokens y contexto</strong> — uso de subagentes y lazy-loading</li>
+          <li><strong>Manejo de secretos</strong> — .env por proyecto, vault corporativo para credenciales</li>
+          <li><strong>Stack tecnológico</strong> preferido (Tableau, Alchemy, MCPs, Skills)</li>
+          <li><strong>Reglas de comunicación externa</strong> — drafts, threads, canales (email/WhatsApp)</li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <div class="col-header">
+          <div class="col-title"><span class="pill">NIVEL 2</span>LOCAL</div>
+          <div class="col-path">proyecto/CLAUDE.md</div>
+        </div>
+        <div class="col-purpose">Contexto específico de cada proyecto, BU o engagement. Uno por carpeta de trabajo.</div>
+        <ul class="col-list">
+          <li><strong>Overview y non-goals</strong> — qué cubre el proyecto y qué explícitamente NO</li>
+          <li><strong>Players y contactos</strong> — nombres, roles, emails, jerarquía</li>
+          <li><strong>Tech stack del proyecto</strong> — sistemas propios + integraciones</li>
+          <li><strong>Locked numbers</strong> — cifras verificadas trazables a fuente (EERR, Directorio)</li>
+          <li><strong>Architecture & patterns</strong> — decisiones técnicas, restricciones, arquitectura</li>
+          <li><strong>Hard rules</strong> — prohibiciones específicas (ej: "Edwin Saavedra nunca como Jr.")</li>
+          <li><strong>Comandos</strong> — scripts, deploys, herramientas del entorno</li>
+          <li><strong>Canary</strong> — frase obligatoria que prueba que el archivo se cargó</li>
+          <li><strong>References</strong> — docs, decks, threads, grabaciones load-on-demand</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-icon">▶</div>
+      <div class="flow-text">
+        <strong>Cada sesión nueva:</strong> Claude lee primero <code>~/.claude/CLAUDE.md</code> (Global) → luego el <code>CLAUDE.md</code> del proyecto activo (Local) → combina ambos como su mandato operativo. La frase <strong>canary</strong> en la primera respuesta verifica que ambos archivos cargaron correctamente.
+      </div>
+    </div>
+
+    <div class="footer">TOYOSA  ·  B | P INTELLIGENCE  ·  2 / 2</div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button id="prev" aria-label="Anterior">‹</button>
+  <div class="counter"><span id="cur">1</span> / <span id="total">2</span></div>
+  <button id="next" aria-label="Siguiente">›</button>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+  const cur = document.getElementById('cur');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  document.getElementById('total').textContent = total;
+
+  function show(i) {
+    idx = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, k) => s.classList.toggle('active', k === idx));
+    cur.textContent = idx + 1;
+    prev.disabled = idx === 0;
+    next.disabled = idx === total - 1;
+  }
+  prev.addEventListener('click', () => show(idx - 1));
+  next.addEventListener('click', () => show(idx + 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(idx + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(idx - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(total - 1);
+  });
+  document.querySelector('.deck').addEventListener('click', (e) => {
+    if (e.target.closest('.nav')) return;
+    show(idx + 1);
+  });
+  show(0);
+</script>
+</body>
+</html>

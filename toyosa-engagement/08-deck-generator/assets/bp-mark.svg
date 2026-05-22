@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 64" role="img" aria-label="B|P Intelligence">
+  <rect x="0" y="0" width="6" height="64" fill="#0f2c4d"/>
+  <rect x="10" y="0" width="6" height="64" fill="#b8860b"/>
+  <g font-family="'Crimson Pro', Georgia, serif" font-weight="600" fill="#0f2c4d">
+    <text x="28" y="34" font-size="28">B</text>
+    <text x="50" y="34" font-size="28" fill="#b8860b">|</text>
+    <text x="60" y="34" font-size="28">P</text>
+  </g>
+  <text x="28" y="54" font-family="'Inter', sans-serif" font-size="10" letter-spacing="2" fill="#1f2937">
+    INTELLIGENCE
+  </text>
+</svg>

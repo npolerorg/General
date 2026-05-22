@@ -1,0 +1,19 @@
+{
+  "name": "toyosa-deck-generator",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Generador del deck mensual de Directorio para Toyosa Holding. Render Handlebars de 16 slides a HTML autocontenido.",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "generate": "node generator.js",
+    "demo": "node generator.js bu=holding periodo=2026-06"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "fs-extra": "^11.2.0",
+    "handlebars": "^4.7.8"
+  }
+}

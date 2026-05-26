@@ -1,0 +1,17 @@
+# Netlify config — Toyosa engagement (monorepo)
+#
+# Cada sitio Netlify del engagement enlaza a este repo y publica una
+# subcarpeta distinta. El sitio "toyosa-directorio-bpd" publica el deck
+# del Directorio (HTML autocontenido, sin build).
+#
+# Si en el futuro se enlazan otros sitios (anexo, intermex) al mismo repo,
+# cada uno define su propio "publish directory" en su configuración de
+# Netlify (Site config -> Build & deploy), o se usan base directories.
+
+[build]
+  publish = "directorio"
+  command = ""
+
+# La protección por contraseña del sitio es un setting a nivel de proyecto
+# en Netlify (Visitor access controls), no vive en el repo: se conserva
+# entre deploys.

@@ -12,8 +12,11 @@ con Agentes IA**.
 - Workflow: editar el deck -> commit -> push -> Netlify auto-build (~1-2 min).
 - La protección por contraseña es un setting de Netlify (Visitor access),
   no vive en el repo; se conserva entre deploys.
-- Versión actual del deck: v0.10. Historial versionado en
-  `07-deliverables/decks-html/` (v09, v10, ...).
+- Versión actual del deck: v0.13. Historial versionado en
+  `07-deliverables/decks-html/` (v09 ... v13).
+- Spec del deck: `DECK_MANUAL.md` (raíz del engagement) — partitura de
+  tipos de lámina, principios (3 capas, diálogo GG, marco de comparación)
+  y taxonomía canónica. Es la fuente de verdad del sistema.
 
 ## Reglas duras
 

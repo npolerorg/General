@@ -1,0 +1,391 @@
+{
+  "_meta": {
+    "schema_version": "v0.1",
+    "period": "2026-05",
+    "period_label": "Cierre Mayo 2026 · YTD enero-mayo (acumulado)",
+    "currency": "USD",
+    "generated_at": "2026-06-19",
+    "generated_by": "Claude Code (handoff bundle · no repo access)",
+    "source_files": {
+      "base": "TOYOSA, BASE PARA DIRECTORIO MAYO 2026, VERSION FINAL.xlsx",
+      "eeff": "TOYOSA, EEFF MAYO 2017 - 2026 VERSION FINAL.xlsx",
+      "mercado": "2026.06 MERCADO Y SEGMENTOS A MAYO 2026.pptx",
+      "oficial": "DIRECTORIO TOYOSA SA, JUNIO 2026.pdf"
+    },
+    "precedence_rule": "PDF oficial es fuente de verdad de presentacion. Donde B|P-D difiere del PDF, B|P-D se corrige hacia el oficial. EXCEPCION DOCUMENTADA: gastos financieros (ver gastos_financieros.gobernanza_pend_jc).",
+    "validation_status": "checksums re-derivados de archivos FINAL; reconciliados contra PDF oficial; 4 pend JC abiertos (ver pend_jc[])"
+  },
+
+  "pnl_ytd_enero_mayo": {
+    "ingresos_operativos_2026": 101309926,
+    "ingresos_operativos_2025": 101615866,
+    "yoy_ingresos": -0.0030,
+    "yoy_ingresos_label": "~0% (planos)",
+    "margen_bruto_2026": 26001293,
+    "margen_bruto_2025": 22309633,
+    "margen_bruto_pct_2026": 0.2567,
+    "yoy_margen_bruto": 0.1655,
+    "yoy_margen_bruto_label": "+16.5%",
+    "ebitda_2026": 19575203,
+    "ebitda_2025": 15773292,
+    "ebitda_pct_2026": 0.193,
+    "yoy_ebitda": 0.2410,
+    "yoy_ebitda_label": "+24.1%",
+    "utilidad_neta_2026": 4113103,
+    "utilidad_neta_2025": 4129756,
+    "utilidad_neta_pct_2026": 0.041,
+    "yoy_utilidad_neta": -0.0040,
+    "yoy_utilidad_neta_label": "-0.4% (plano)",
+    "source": {
+      "base_excel": "EVOLUCION MARGEN EBITDA UTILIDA · rows 11-12 (2025/2026)",
+      "pdf_oficial": "pag.13/15 EBITDA, pag.16 neto"
+    },
+    "validated_by_jc": true
+  },
+
+  "gastos_financieros": {
+    "_canonico": {
+      "total_2026_ytd": 6435956,
+      "total_2026_label": "$6.44M",
+      "intereses_2026": 3406451,
+      "comisiones_2026": 136611,
+      "componentes_no_expuestos_2026": 2892894,
+      "componentes_no_expuestos_label": "~$2.9M de cupones/otros NO desglosados en la fuente; total V7 NO suma intereses + comisiones",
+      "total_2025_ytd": 4691662,
+      "ratio_sobre_ingresos_2026": 0.0635,
+      "ratio_sobre_ingresos_label": "6.4%",
+      "yoy_segun_fuente": 0.3718,
+      "yoy_segun_fuente_label": "+37.2%",
+      "source": "BASE FINAL · hoja 7.GASTOS FINANCIEROS · bloque YTD ene-may · celdas V5 (intereses) / V6 (comisiones) / V7 (total) / U7 (2025 total)"
+    },
+    "_pend_jc_yoy_base_2025": {
+      "issue": "YoY del costo financiero",
+      "value_segun_fuente": "+37.2% (6.44 / 4.69 - 1)",
+      "value_segun_narrativa": "+45% (implica base 2025 de ~$4.44M, distinta a hoja)",
+      "estado": "no publicar YoY hasta que JC confirme la base 2025",
+      "display_label": "pend JC: YoY costo financiero (+37.2% fuente / +45% narrativa - confirmar base 2025)"
+    },
+    "_pend_jc_composicion": {
+      "issue": "Desglose de componentes",
+      "evidencia": "V5 intereses $3.41M + V6 comisiones $0.14M = $3.55M, NO suma V7 total $6.44M. Faltan ~$2.9M no expuestos.",
+      "estado": "usar total $6.44M como dato firme, desglose como pend JC. No replicar la composicion del deck.",
+      "display_label": "pend JC: composicion gastos financieros (V5+V6 != V7; ~$2.9M sin etiqueta)"
+    },
+    "_pend_jc_gobernanza_slide_26": {
+      "issue": "Conflicto deck oficial vs fuente FINAL en gastos financieros",
+      "regla_maestra": "El PDF oficial tiene precedencia de datos.",
+      "excepcion": "En gastos financieros el PDF parece estar mal contra la fuente FINAL que JC envio.",
+      "evidencia_deck": {
+        "slide_pdf": 26,
+        "titulo_slide": "Analisis de gastos financieros 2017-2026 (Enero a Mayo)",
+        "total_publicado": "$6.8 M",
+        "ratio_publicado": "6.7%",
+        "intereses_barra": "$5.73 M",
+        "comisiones_barra": "$0.22 M",
+        "inconsistencia_interna_pdf": "5.73 + 0.22 = $5.95M, no suma el $6.8M publicado en el texto"
+      },
+      "evidencia_fuente_final": {
+        "hoja": "7.GASTOS FINANCIEROS (BASE FINAL)",
+        "intereses_v5_2026_ytd": 3406451,
+        "comisiones_v6_2026_ytd": 136611,
+        "total_v7_2026_ytd": 6435956,
+        "intereses_b5_anual_2017": 5728387,
+        "trampa": "El $5.73M de intereses 2026 que muestra el deck oficial = celda B5 = intereses ANUALES de 2017. La serie de intereses del deck calza EXACTO con la fuente YTD para 2017-2025; solo 2026 difiere."
+      },
+      "comportamiento_bpd": "Mostrar dato source-true ($6.44M / 6.4%) con flag pend JC visible en superficie. No resolver solo.",
+      "decision_pendiente_jc": "Opcion A: corregir el deck oficial a $6.44M. Opcion B: que B|P-D iguale al deck a $6.8M.",
+      "display_label": "pend JC: gobernanza gastos financieros (PDF dice $6.8M, fuente dice $6.44M - JC define)"
+    },
+    "deprecated_values_to_eliminate": {
+      "valor_anterior": "$6.80M",
+      "valor_anterior_pct": "6.7%",
+      "instruccion": "Reemplazar $6.80M -> $6.44M en TODAS las superficies del dashboard (lamina gastos, Cambios punto 3, KPI card, narrativa, popup, JSON)"
+    }
+  },
+
+  "balance_y_deuda": {
+    "activos_totales_2026": 419490000,
+    "activos_totales_2026_label": "$419.49M",
+    "roa_2026": 0.0098,
+    "patrimonio_2026": 174530000,
+    "patrimonio_2026_label": "$174.53M (cierre)",
+    "patrimonio_2025_cierre": 143180000,
+    "patrimonio_2025_label": "$143.18M",
+    "total_pasivo": 244960000,
+    "total_pasivo_label": "$244.96M (NO es deuda)",
+    "deuda_total": {
+      "valor_2026": 144942008,
+      "label": "$144.94M",
+      "valor_2025": 111687300,
+      "valor_dic_2025": 134900000,
+      "valor_abril_2026": 134760000,
+      "yoy": 0.298,
+      "yoy_label": "+30% YoY",
+      "vs_dic_2025": 0.074,
+      "vs_dic_2025_label": "+7% vs dic-25",
+      "vs_abril_2026": 10180000,
+      "vs_abril_2026_label": "+~$10M en el mes",
+      "cp_2026": 133517671,
+      "lp_2026": 11424337,
+      "pct_cp": 0.921,
+      "pct_cp_label": "92% CP",
+      "deuda_patrimonio": 0.83,
+      "deuda_patrimonio_label": "0.83x",
+      "source": {
+        "base_excel": "7.3 TOTAL ENDEUDAMIENTO · row 33 (Total endeudam) · cols 2025/2026",
+        "pdf_oficial": "pag.21"
+      },
+      "validated_by_jc": true
+    },
+    "deuda_bancaria": {
+      "valor_2026": 120336569,
+      "label": "$120.34M",
+      "cp_2026": 110339981,
+      "cp_label": "$110.34M",
+      "lp_2026": 9996588,
+      "lp_label": "$10.00M",
+      "yoy": 0.22,
+      "yoy_label": "+22% (vs $98.49M en 2025)",
+      "vs_dic_2025": 0.037,
+      "vs_dic_2025_label": "+3.7% vs dic-25 ($116M)",
+      "source": "BASE FINAL · 7.3 TOTAL ENDEUDAMIENTO · rows 13 (CP TOTAL) + 22 (LP TOTAL). PDF pag.22"
+    },
+    "deuda_bursatil": {
+      "valor_2026": 24605439,
+      "label": "$24.61M",
+      "valor_2025": 13193661,
+      "yoy": 0.865,
+      "yoy_label": "+86% YoY ($13.19M -> $24.61M)",
+      "vs_dic_2025_label": "+30% vs dic-25 ($18.8M)",
+      "composicion": {
+        "bonos_cp": 3656564,
+        "bonos_cp_label": "$3.66M",
+        "pagares_mn_cp": 19521125,
+        "pagares_mn_cp_label": "$19.52M (este es el delta que el analisis anterior OMITIA)",
+        "bonos_lp": 1427749,
+        "bonos_lp_label": "$1.43M",
+        "total_check": 24605438
+      },
+      "source": "BASE FINAL · 7.3 rows 25-28 · 7.2 row 9. PDF pag.21+25"
+    },
+    "perimetro_diferencia_documentada": {
+      "eeff_final_total": 147330000,
+      "eeff_final_cp": 136280000,
+      "eeff_final_lp": 11050000,
+      "oficial_total": 144940000,
+      "diferencia": 2390000,
+      "ubicacion_diferencia": "toda en linea bancaria (perimetro de clasificacion)",
+      "canonico": "$144.94M (oficial)",
+      "instruccion": "NO es error. Documentar la diferencia de perimetro en VALIDACION.md, usar el oficial."
+    },
+    "narrativa_corregida": "Deuda y costo financiero suben juntos; el operativo record no llega al neto por el costo de fondeo creciente. NO es 'el stock baja, el costo sube'. NO mencionar 'rotacion bursatil->bancaria'.",
+    "callouts_a_eliminar": [
+      "Deuda baja ~$7M",
+      "Bursatil $7.33M (FALSO - el correcto es $24.61M)",
+      "Rotacion bursatil->bancaria"
+    ]
+  },
+
+  "unidades_ytd_enero_mayo": {
+    "total_mayo_2026": 297,
+    "total_ytd_2026": 1634,
+    "por_marca": {
+      "toyota": {
+        "mayo_2026": 229,
+        "ytd_2026": 1299,
+        "ytd_2025": 1484,
+        "yoy_label": "-12%",
+        "validated_by_jc": true
+      },
+      "lexus": {
+        "mayo_2026": 6,
+        "ytd_2026": 29,
+        "ytd_2025": 35,
+        "yoy_label": "-17%"
+      },
+      "yamaha": {
+        "mayo_2026": 62,
+        "ytd_2026": 282,
+        "ytd_2025": 518,
+        "yoy_label": "-46%"
+      },
+      "hino": {
+        "mayo_2026": 0,
+        "ytd_2026": 24,
+        "ytd_2025": 39,
+        "yoy_label": "-38%"
+      }
+    },
+    "source": "PDF oficial pag.6 (Tendencia en venta de unidades 2017-2026 Enero a Mayo)"
+  },
+
+  "toyota_por_modelo_ytd_2026": {
+    "_period": "Enero a Mayo 2026 (acumulado)",
+    "total_general": 1299,
+    "modelos_en_crecimiento_vs_2025": [
+      { "modelo": "COASTER", "ytd_2026": 30, "ytd_2025": 11, "yoy_label": "+173%" },
+      { "modelo": "LAND CRUISER 70", "ytd_2026": 206, "ytd_2025": 105, "yoy_label": "+96%" },
+      { "modelo": "4RUNNER", "ytd_2026": 45, "ytd_2025": 23, "yoy_label": "+96%" },
+      { "modelo": "FORTUNER", "ytd_2026": 21, "ytd_2025": 15, "yoy_label": "+40%" },
+      { "modelo": "RAV4", "ytd_2026": 131, "ytd_2025": 115, "yoy_label": "+14%" }
+    ],
+    "modelos_en_caida_vs_2025": [
+      { "modelo": "HILUX", "ytd_2026": 356, "ytd_2025": 414, "yoy_label": "-14%", "nota": "quiebre de stock (causa que cita JC en L3)" },
+      { "modelo": "RUSH", "ytd_2026": 122, "ytd_2025": 153, "yoy_label": "-20%" },
+      { "modelo": "COROLLA", "ytd_2026": 108, "ytd_2025": 226, "yoy_label": "-52%" },
+      { "modelo": "RAIZE", "ytd_2026": 29, "ytd_2025": 68, "yoy_label": "-57%" },
+      { "modelo": "YARIS", "ytd_2026": 37, "ytd_2025": 52, "yoy_label": "-29%" },
+      { "modelo": "PRADO", "ytd_2026": 87, "ytd_2025": 131, "yoy_label": "-34%" },
+      { "modelo": "HIACE", "ytd_2026": 104, "ytd_2025": 140, "yoy_label": "-26%" },
+      { "modelo": "LAND CRUISER 300", "ytd_2026": 17, "ytd_2025": 20, "yoy_label": "-15%" },
+      { "modelo": "AGYA", "ytd_2026": 0, "ytd_2025": 10, "yoy_label": "-100%" },
+      { "modelo": "AVANZA", "ytd_2026": 0, "ytd_2025": 1, "yoy_label": "-100%" }
+    ],
+    "source": "PDF oficial pag.7 (Detalle anual de venta de vehiculos Toyota por modelo 2017-2026 Enero a Mayo)"
+  },
+
+  "absorption_rate": {
+    "mayo_2026": 0.7268,
+    "mayo_2026_label": "72.68%",
+    "abril_2026_label": "75.51%",
+    "mayo_2025_label": "82.29%",
+    "yoy_label": "-961 bps",
+    "explicacion_oficial": "La caida del Absorption rate al cierre de mayo 2026 (vs mayo 2025) se explica por el incremento en los gastos fijos (mantenimiento de valor del inventario de repuestos, ajustado por la UFV e incremento en costos de mano de obra) es de mayor proporcion al incremento en el margen de posventa (repuestos y servicios)",
+    "explicacion_status": "Cierra pend de absorption con explicacion del PDF oficial pag.19.",
+    "serie_historica": {
+      "2021": 0.5545, "2022": 0.6247, "2023": 0.5580, "2024": 0.6189, "2025": 0.8229, "2026": 0.7268
+    },
+    "source": "PDF oficial pag.19 (Evolucion del Absorption Rate 2021-2026 Enero a Mayo)",
+    "validated_by_jc": true
+  },
+
+  "kpi_card_ingresos_vehiculos_ytd": {
+    "_pend_jc": true,
+    "label_anterior": "Facturacion bruta YTD",
+    "label_nuevo": "Ingresos vehiculos YTD",
+    "monto_bruto": 106900000,
+    "monto_bruto_label": "$106.9M",
+    "monto_neto_iva": 93100000,
+    "monto_neto_iva_label": "$93.1M (= 106.9 x 0.87)",
+    "decision_pendiente": "JC tacho $106.9M y escribio $93.1M. Al renombrar de 'facturacion' (bruto) a 'ingresos' (neto), JC probablemente quiere el neto $93.1M. CONFIRMAR antes de fijar.",
+    "display_label": "pend JC: la tarjeta va con $106.9M bruto o $93.1M neto de IVA?"
+  },
+
+  "kpi_card_roe": {
+    "valor_publicado": 0.0236,
+    "valor_publicado_label": "2.36%",
+    "metodo_publicado": "patrimonio de cierre ($174.53M)",
+    "metodo_correcto_pendiente": "patrimonio promedio (para anualizar)",
+    "estado": "pend JC tanda 2 (JC enviara patrimonio promedio anual)",
+    "instruccion": "Mantener el numero 2.36%; flagear el metodo como pend JC tanda 2.",
+    "source": "PDF oficial pag.17"
+  },
+
+  "mercado_share_pendiente_pptx": {
+    "_pend_pptx_validation": true,
+    "_nota": "Datos extraidos del prompt; cargar PPTX en sesion con repo y revalidar antes de pintar.",
+    "top_10_mayo_2026": [
+      { "rank": 1, "marca": "Toyota", "unidades": 2088, "share": 0.161 },
+      { "rank": 2, "marca": "Suzuki", "unidades": 1855, "share": 0.143 },
+      { "rank": 3, "marca": "Changan", "unidades": 934, "share": 0.072 },
+      { "rank": 4, "marca": "Kingwin", "unidades": 880, "share": 0.068 },
+      { "rank": 5, "marca": "GAC", "unidades": 738, "share": 0.057 },
+      { "rank": 6, "marca": "Foton", "unidades": 597, "share": 0.046 },
+      { "rank": 7, "marca": "Chery", "unidades": 518, "share": 0.040 },
+      { "rank": 8, "marca": "BYD", "unidades": 509, "share": 0.039 },
+      { "rank": 9, "marca": "Nissan", "unidades": 444, "share": 0.034 },
+      { "rank": 10, "marca": "Mitsubishi", "unidades": 424, "share": 0.033 },
+      { "rank": null, "marca": "Otros", "unidades": 3951, "share": 0.305 }
+    ],
+    "evolucion_share_por_grupo": {
+      "imcruz_inchcape": { "2019": 0.336, "2026": 0.257 },
+      "saavedra_toyosa": { "2019": 0.113, "2026": 0.213 }
+    },
+    "importacion_gris_toyota": {
+      "2019": 0.26,
+      "2026": 0.17,
+      "serie_oficial_vs_gris_2026_05": { "oficial": 1733, "gris": 355 }
+    },
+    "mensaje_propuesto_loop_gg": "Toyosa gana participacion mientras el lider historico la cede; las marcas chinas (Changan, GAC, Foton, Chery, BYD) son la presion estructural.",
+    "pend_jc_tanda_2": "orden de la lamina (Edwin: benchmark LATAM despues de macro) y fusion con hoja COMPETENCIA de la base."
+  },
+
+  "carry_forward_compromisos": {
+    "_instruccion": "Reconstruir, no editar. JC vacio casi toda la seccion.",
+    "eliminar": [
+      "validar venta flota LC70",
+      "hipotesis +297 bps margen bruto",
+      "EBITDA confirmado $19.57M (cerrado)",
+      "facturacion bruta 2025 homogenea",
+      "validar MB y Absorption",
+      "mapear deuda CP rotativa",
+      "Desviacion abierta: Dealers -48%",
+      "Desviacion abierta: Interauto",
+      "Desviacion abierta: definicion canal-dealer",
+      "Desviacion abierta: Prado/LC70",
+      "Desviacion abierta: Santa Cruz -33%"
+    ],
+    "mantener_con_correccion": [
+      {
+        "compromiso": "Real Estate / ROE automotriz puro",
+        "status": "EN PROCESO",
+        "correccion_jc": "NO mencionar a Crown aqui; redactar 'se esta trabajando en la info de Toyosa'."
+      },
+      {
+        "compromiso": "Caida del canal Dealers",
+        "status": "ACCION",
+        "dato_nuevo_mayo": "Dealers cerro mayo a 71% de meta",
+        "instruccion": "Reformular como seguimiento, no como las 5 desviaciones viejas"
+      }
+    ],
+    "agregar_nuevos_3": [
+      "Validar aging del stock (dias desde su arribo a Bolivia) identificando modelos con problemas",
+      "Evaluar el nivel optimo de endeudamiento",
+      "Finalizar el nuevo formato de presentacion de directorio con IA (incluye versionado/lock §6, Agente MdV §7, Skill MdT §8)"
+    ],
+    "conexiones": "Compromisos 1 y 2 conectan con seccion liquidez/crisis en diseno - etiquetar para reuso, NO construir esa seccion aca.",
+    "fuente_futura": "JC enviara el resumen de acuerdos y seguimiento de cada directorio que lleva en Teams.",
+    "pend_data_teams": "ingesta resumen de acuerdos (Teams · JC)"
+  },
+
+  "secuencia_directorio_reorden_boris_geronimo": {
+    "_estado": "marcado visiblemente como reorden Boris/Geronimo 13-jun pendiente de confluir con revision 9-27 de JC",
+    "orden_propuesto": [
+      "1. Seguimiento de acuerdos del directorio anterior (carry-forward) - PRIMERO",
+      "2. Situacion macro (Bolivia)",
+      "3. Market share / analisis de competencia (pend data: integracion PPTX)",
+      "4. Calidad de ventas / Puntos destacados (mix, modelos, base alta 2025)",
+      "5. Desviaciones mensuales",
+      "6. Concentracion / performance por sucursal (pend data: granularidad JC)"
+    ],
+    "salvedad": "Las laminas oficiales detalladas se mantienen como capa de soporte en su orden validado hasta que JC cierre 9-27."
+  },
+
+  "pend_jc_tanda_2": [
+    "ROE patrimonio promedio (metodo)",
+    "Macro cuantitativo (RIN, brecha, FMI, etc.)",
+    "YoY costo financiero (base 2025)",
+    "Composicion gastos financieros (V5+V6 vs V7)",
+    "Gobernanza slide 26 ($6.8M oficial vs $6.44M fuente)",
+    "Tarjeta Ingresos vehiculos: $106.9M bruto vs $93.1M neto",
+    "Orden de mercado (benchmark LATAM despues de macro) + fusion hoja COMPETENCIA",
+    "Serie mensual por KPI (margen / EBITDA / neto / ROE / absorption) - para comparativo mes-anterior del popup de Boris",
+    "Comparativo contra presupuesto por KPI",
+    "Lo que salga de comercial / marketing (reunion 19-jun)"
+  ],
+
+  "pend_data_roadmap": [
+    "Performance por sucursal (gap analysis; mejores/peores con motivo) - data granular JC",
+    "ROE por segmento / activos prescindibles vs imprescindibles / transferencias intercompany Crown-Toyosa",
+    "Marketing como funnel (leads / conversiones / CAC) - Miroslava",
+    "Competencia a fondo desde PPTX (nacionalizaciones e importaciones, seguimiento mensual)",
+    "Ingesta resumen acuerdos Teams (JC) para carry-forward",
+    "Ingesta reportes externos (McKinsey, Banco Mundial, consultoras) para macro/competencia",
+    "Mix por uso: distinguir Hilux (retail 1-a-1) vs LC70 (comercial, mayor margen)",
+    "Stack BI cliente: Power BI (no Tableau - descartado por costo)"
+  ],
+
+  "pend_it": [
+    "Modelo de auth con usuarios nombrados para atribucion / roles (logins con nombre, no solo password del sitio)"
+  ]
+}
